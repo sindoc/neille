@@ -20,8 +20,8 @@
     (sleep/yield 1)
     self)
   (define (init-components)
-    (define menu-bar (make-menu-bar self))
-    (define file-menu (make-file-menu menu-bar))
+    (define main-menu-bar (make-main-menu-bar self))
+    (define file-menu (make-file-menu main-menu-bar))
     (define quit-menu-item (make-quit-menu-item file-menu))
     'OK
     )
@@ -136,6 +136,20 @@
   (define (dispatch-file-menu msg)
     (case msg
       ((file-menu?) #t)
+      (else
+       (usual msg))))
+  (init))
+
+(define (make-main-menu-bar container)
+  (define self '())
+  (define usual '())
+  (define (init)
+    (set! usual (make-menu-bar container))
+    (set! self dispatch-main-menu-bar)
+    self)
+  (define (dispatch-main-menu-bar msg)
+    (case msg
+      ((main-menu-bar?) #t)
       (else
        (usual msg))))
   (init))
