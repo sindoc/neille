@@ -1,5 +1,7 @@
 #lang racket/gui
 
+(define *exported* '())
+
 (define (layout)
   (define self '())
   (define ui '())
@@ -23,8 +25,20 @@
     (define main-menu-bar (make-main-menu-bar self))
     (define file-menu (make-file-menu main-menu-bar))
     (define quit-menu-item (make-quit-menu-item file-menu))
-    'OK
-    )
+    (define (life label)
+      (new slider% [label label]
+           [min-value 1]
+           [max-value 20]
+           [parent ui]
+           [enabled #f]
+           [style '(vertical)]
+           [init-value 20]))
+    (define life-x (life "X"))
+    (define life-y (life "Y"))
+    (set! 
+     *exported* 
+     (cons life-x (cons life-y *exported*)))
+    'done)
     
   (define (dispatch-layout msg)
     (case msg
@@ -169,13 +183,34 @@
       (else
        (usual msg))))
   (init))
-
-;; Will port these later
+  
 ;(define graveyard
 ;  (new 
 ;   panel% 
 ;   [parent field]))
-;
+
+(define (make-graveyard container)
+  (define self '())
+  (define ui '())
+  (define canvas '())
+  (define (init)
+    (set!
+     ui
+     (new 
+      panel%
+      [parent (container 'ui)]))
+    (set! self dispatch-graveyard)
+    self)
+  (define (dispatch-graveyard msg)
+    (case msg
+      ((graveyard?) #t)
+      ((ui) ui)
+      ((container) container)
+      (else
+       (error "Unknown message" msg))))
+  self)
+  
+
 ;(define graveyard-canvas
 ;  (new 
 ;   canvas%
