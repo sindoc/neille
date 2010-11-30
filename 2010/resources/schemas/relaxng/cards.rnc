@@ -1,0 +1,14 @@
+default namespace = "http://sina.khakbaz.com/2010/neille/ns/card"
+
+include "common.rnc"
+include "card.rnc"
+
+start = neille.cards
+
+neille.cards.common.attlist = neille.common.attlist
+
+neille.cards.attlist = neille.cards.common.attlist
+neille.cards = element cards {
+  neille.cards.attlist,
+  neille.card*
+}
