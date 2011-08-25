@@ -1,4 +1,0 @@
-default namespace = "http://sina.khakbaz.com/2010/neille/ns/card"
-
-neille.role.attrib = attribute role { text }
-neille.common.attlist = neille.role.attrib?
