@@ -1,0 +1,14 @@
+<card ready="8" health="6" attack="1" units="3" artifacts="1" spells="2" 
+      tier="4">
+  <name>Loremaster Tani</name>
+  <type>Hero</type>
+  <faction>Elf</faction>
+  <specials>
+    <ability>Zap</ability>
+    <ability>Zap</ability>
+  </specials>
+  <note>
+    <phrase>Twice each action, deals 1 damage to a random enemy</phrase>
+  </note>
+  <set>Goody Bag</set>
+</card>

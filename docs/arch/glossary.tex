@@ -1,0 +1,174 @@
+\newacronym{uxd}{UXD}{User eXperience Design}
+\newacronym{ux}{UX}{User eXperience}
+\newacronym{ui}{UI}{User Interface}
+
+\newacronymentry{ai}{AI}{Artificial Intelligence}{%
+A branch of Computer Science that studies the design
+of intelligent systems.
+\wref{Artificial_Intelligence}}{}
+
+\newacronymentry{mvc}{MVC}{Model-View-Controller}{%
+A software architecture design pattern that is applied
+to build a reactive system. MVC is often used to
+loosely couple presentational aspects of a software
+application to pure abstractions that represent
+the application semantics.
+\wref{Model-view-controller}
+}{user1={the MVC design pattern}}
+
+\newacronymentry{adt}{ADT}{Abstract Data Type}{%
+A means of abstracting a concept with well-defined semantics. An ADT acts
+as a bridge between the semantics of an abstracted concept and the physical 
+representation thereof in a computer.
+\wref{Abstract_data_type}
+}{}
+
+\newacronymentry{io}{I/O}{Input/Output}{%
+The communication between two \glspl{agent}. \emph{I/O} 
+is a general term to refer to any method that two 
+\glspl{agent} use to either receive input from
+ or pass data to each other.
+\wref{Input/output}
+}{user1={the I/O mechanism}, user2={an I/O mechanism}}
+
+\newacronymentry{xml}{XML}{Extensible Markup Language}{%
+An open and widely supported standard that 
+proposes a syntax in which to encode data with
+arbitrary semantics.
+\wref{XML}
+}{}
+
+\newacronymentry{xslt}{XSLT}{Extensible Stylesheet Language Transformation}{%
+An \gls{xml}-based domain-specific language that is used for transformation
+of \gls{xml} documents into other text-based formats.
+\wref{XSLT}
+}{user6={XSLT stylesheet}, see={xml,xpath}}
+
+\newacronymentry{xpath}{XPath}{XML Path Language}{%
+A domain-specific query language for selecting nodes from an \gls{xml}.
+In addition, XPath computes values --e.g. strings, numbers-- from the
+content of \gls{xml} documents.
+\wref{XPath}
+}{see={xml,xslt}}
+
+\newacronymentry{jpeg}{JPEG}{Joint Photographic Experts Group}{%
+An open standard for coding and compressing still digital images, 
+named after the committee that overseas the development of the standard 
+\cite{international_telecommunication_union_information_1993}.
+\wref{JPEG}
+}{}
+
+\newacronymentry{lisp}{Lisp}{List Programming}{%
+A class of programming languages in which code is treated as data.
+In this document, we are primarily interested in a particular
+dialect of Lisp, namely \gls{racket}.
+\wref{Lisp_(programming_language)}
+}{first={Lisp}, see={scheme,racket}}
+
+\newacronymentry{gui}{GUI}{Graphical User Interface}{%
+\Glsuserii{io} that uses digital graphics to output information.
+GUIs receive input by having users directly interact with the
+graphics they display.
+\wref{Graphical_user_interface}
+}{%
+plural={GUIs}, 
+user1={the GUI},
+user3={the graphical user interface},
+see={io}}
+
+\newacronymentry{repl}{REPL}{Read-Eval-Print Loop}{%
+\Glsuserii{io} that receives the lexical representation of a program (code),
+evaluates the code based on well-defined semantics, and prints out the 
+result of the evaluation of the code. Unless the code is well-formed and sound,
+the result will be an error.
+\wref{Read-eval-print_loop}
+}{user1={the REPL},see={io}}
+
+\newacronymentry{vm}{VM}{Virtual Machine}{%
+A computer program that abstracts the underlying hardware. 
+Examples include compilers and interpreters}{}
+
+\newglossaryentry{jpegbd}{name={JPEG Baseline Decoder},
+user2={a JPEG baseline decoder}, description={%
+\gls{jpeg} Given a sequence of bytes that conforms to the 
+}}
+
+\newglossaryentry{agent}{name={Agent}, plural={agents},
+user1={the agent}, user2={an agent}, description={%
+Any entity such as a human or a computer program that is capable of 
+communicating with \gls{neille}.
+\wref{Software_agent}
+}}
+
+\newglossaryentry{scheme}{name={Scheme}, 
+user1={the Scheme programming language}, description={%
+A dialect of the Lisp family of programming languages. Among 
+other things, Scheme is dynamically-typed, statically-scoped, and has 
+first-class functions and continuations. Scheme is the 
+predecessor of \gls{racket}.
+\wref{Scheme_(programming_language)}
+},see={lisp,racket}}
+
+\newglossaryentry{racket}{name={Racket}, 
+user1={the Racket programming language},
+user2={the Racket interpreter},
+user3={the Racket platform}, 
+user4={the Racket virtual machine},
+user5={the Racket dialect of Lisp},
+description={%
+A multi-paradigm programming language that also serves as a
+platform for language creation, design, and implementation.
+The programming language itself is inspired by \gls{scheme}.
+However, the underlying platform enables language designers
+to create languages with arbitrary syntax and semantics.
+\wref{Racket_(programming_language)}
+},see={lisp,scheme}}
+
+\newglossaryentry{facebook}{name={Facebook},
+user1={the Facebook web-based computing platform},
+description={A propriatary, and distributed platform for 
+social interactions on the Internet.
+\wref{Facebook}
+}}
+
+\newglossaryentry{ws}{name={Warstorm},
+user1={the Warstorm card game}, description={%
+An online collectible card game that is primarily distributed over
+\gls{facebook}.
+\newline
+\newline
+For more information on the Warstorm card game, please refer to:
+\newline
+\url{http://warstorm.wikia.com/wiki/Warstorm_Wiki}
+}}
+
+\newglossaryentry{neille}{name={Neille}, 
+user1={the Neille project}, description={%
+A \gls{ws}-like card game written in \glsuserv{racket}
+},see={ws,racket}}
+
+\newglossaryentry{reify}{name={Reification}, text={reify}, description={%
+Turning an abstract grammar entity to a concrete grammar entity.\newline
+Antonym: \gls{deify}}}
+
+\newglossaryentry{deify}{name={Deification}, text={deify}, description={%
+Transforming an instance of the concrete grammar into an instance of the
+abstract grammar.\newline
+Synonym: \emph{Parsing}. Antonym: \gls{reify}}}
+
+\newglossaryentry{nxml}{name={nXML mode}, first={nXML mode for Emacs},
+description={%
+An addon for GNU Emacs that turns GNU Emacs into an exceptionally
+powerful \gls{xml} editor.
+\newline
+\newline
+For more information on nXML mode, please refer to:
+\newline
+  \url{http://www.thaiopensource.com/nxml-mode/}
+}}
+
+\newglossaryentry{rng}{name={RELAX NG}, 
+user1={the RELAX NG schema language}, description={%
+.
+\wref{RELAX_NG}
+}}

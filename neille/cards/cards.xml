@@ -1,0 +1,388 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<cards xmlns="http://sina.khakbaz.com/2010/neille/ns/card">
+
+  <!-- Neutral Artifacts -->
+
+  <card tier="2" ready="2">
+    <type>Artifact</type>
+    <name>Amulet of Health</name>
+    <faction>Neutral</faction>
+    <specials>
+      <ability>Health +4</ability>      
+    </specials>
+    <note>
+      <phrase>While equipped, gain +4 health</phrase>
+    </note>
+    <set>Goody Bag</set>
+  </card>
+
+  <card tier="2" ready="2">
+    <name>Chalice of Healing</name>
+    <type>Artifact</type>
+    <faction>Neutral</faction>
+    <specials>
+      <ability>Health +3</ability>
+      <ability>Regenerate</ability>
+    </specials>
+    <note>
+      <phrase>While equipped, gains +3 health</phrase>
+      <phrase>Recovers 1 lost health at the end of its turn</phrase>
+    </note>
+    <set>Goody Bag</set>
+  </card>
+
+  <card tier="2" ready="4">
+    <name>Silvintri Longbow</name>
+    <type>Artifact</type>
+    <faction>Neutral</faction>
+    <specials>
+      <ability>Attack +2</ability>
+      <ability>Archery</ability>
+    </specials>
+    <note>
+      <phrase>+2 attack when equipped</phrase>
+      <phrase>Double damage when attacking infantry or flying enemies</phrase>
+    </note>
+    <set>Goody Bag</set>
+  </card>
+
+  <card tier="2" ready="4">
+    <name>Slavedriver Whip</name>
+    <type>Artifact</type>
+    <faction>Neutral</faction>
+    <specials>
+      <ability>Rush 2</ability>
+    </specials>
+    <note>
+      <phrase>Each action, reduces the ready value of a random card in the
+      friendly staging area by 2</phrase>
+    </note>
+    <set>Goody Bag</set>
+  </card>
+
+  <!-- Elf Heroes -->
+
+  <card tier="4" units="6" ready="6" health="4" attack="2">
+    <name>Grovekeeper Dyrbral</name>
+    <type>Hero</type>
+    <faction>Elf</faction>
+    <specials>
+      <ability>Regenerate 2</ability>
+    </specials>
+    <note>
+      <phrase>Recovers 2 lost health at the end of its turn</phrase>
+    </note>
+    <set>Novice</set>
+  </card>
+
+  <card tier="4" ready="8" health="4" attack="3" units="6">
+    <name>Landen Hawkeye</name>
+    <type>Hero</type>
+    <faction>Elf</faction>
+    <specials>
+      <ability>Archery</ability>
+    </specials>
+    <note>
+      <phrase>Double damage when attacking infantry or flying enemies</phrase>
+    </note>
+    <set>Novice</set>
+  </card>
+
+  <card ready="8" health="6" attack="1" units="3" artifacts="1" spells="2" 
+	tier="4">
+    <name>Loremaster Tani</name>
+    <type>Hero</type>
+    <faction>Elf</faction>
+    <specials>
+      <ability>Zap</ability>
+      <ability>Zap</ability>
+    </specials>
+    <note>
+      <phrase>Twice each action, deals 1 damage to a random enemy</phrase>
+    </note>
+    <set>Goody Bag</set>
+  </card>
+
+  <!-- Human Heroes -->
+
+  <card tier="4" ready="10" health="6" attack="1" units="4" artifacts="2">
+    <name>Archaeologist Arugi</name>
+    <type>Hero</type>
+    <faction>Human</faction>
+    <specials>
+      <ability>Heal 2</ability>
+    </specials>
+    <note><phrase>Restores 2 lost health to the most damaged friend each 
+    action</phrase>
+    </note>
+    <set>Expert</set>
+  </card>
+
+  <card tier="6" ready="8" health="8" attack="3" units="6">
+    <name>Lord General Pozak</name>
+    <type>Hero</type>
+    <faction>Human</faction>
+    <set>Novice</set>
+  </card>
+
+  <card tier="4" ready="10" health="5" units="4" spells="2">
+    <name>Varu Blackrobe</name>
+    <type>Hero</type>
+    <faction>Human</faction>
+    <specials>
+      <ability>Zap 3</ability>
+    </specials>
+    <note>
+      <phrase>Each action, deals 3 damage to a random enemy</phrase>
+    </note>
+    <set>Expert</set>
+  </card>
+
+  <!-- Neutral Spell -->
+
+  <card tier="2" ready="2">
+    <name>Battle Preparations</name>
+    <type>Spell</type>
+    <faction>Neutral</faction>
+    <specials>
+      <ability>Rush 6</ability>
+    </specials>
+    <note>
+      <phrase>
+	Targets the card with the highest ready value in the friendly
+	staging area, reducing its ready by 6
+      </phrase>
+    </note>
+    <set>Expert</set>
+  </card>
+
+  <card tier="2" ready="8">
+    <name>Sabotage</name>
+    <type>Spell</type>
+    <faction>Neutral</faction>
+    <specials>
+      <ability>Sabotage</ability>
+    </specials>
+    <note>
+      <phrase>
+	Targets a card with highest ready value in the opponent's staging
+	area, sending it to the graveyard
+      </phrase>
+    </note>
+    <set>Goody Bag</set>
+  </card>
+
+  <card tier="2" ready="4">
+    <name>Shrink</name>
+    <type>Spell</type>
+    <faction>Neutral</faction>
+    <specials>
+      <ability>Sap 5</ability>
+    </specials>
+    <note><phrase>
+      Targets the enemy with the highest attack rating reduces that 
+      attack by 5
+    </phrase></note>
+    <set>Goody Bag</set>
+  </card>
+
+  <card tier="2" ready="2">
+    <name>Zap</name>
+    <type>Spell</type>
+    <faction>Neutral</faction>
+    <specials>
+      <ability>Zap 4</ability>
+    </specials>
+    <note>
+      <phrase>Deals 4 damage to a random enemy</phrase>
+    </note>
+    <set>Expert</set>
+  </card>
+
+  <!-- Elf Units -->
+
+  <card tier="1" ready="4" health="3" attack="1" >
+    <name>Anden Herbalist</name>
+    <type>Infantry</type>
+    <faction>Elf</faction>
+    <squadrole>Unit</squadrole>
+    <specials>
+      <ability>Heal</ability>
+    </specials>
+    <note>
+      <phrase>
+	Restores 1 lost health to the most damaged friend each action
+      </phrase>
+    </note>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="4" attack="1" health="4">
+    <name>Anden Spearman</name>
+    <type>Infantry</type>
+    <faction>Elf</faction>
+    <squadrole>Unit</squadrole>
+    <specials>
+      <ability>Pikeman</ability>
+    </specials>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="4" attack="0" health="2">
+    <name>Dangerous Path</name>
+    <type>Barrier</type>
+    <faction>Elf</faction>
+    <squadrole>Unit</squadrole>
+    <specials>
+      <ability>Retaliate</ability>
+      <ability>Trap</ability>
+    </specials>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="2" attack="1" health="3">
+    <name>Forest Crawler</name>
+    <type>Beast</type>
+    <faction>Elf</faction>
+    <squadrole>Unit</squadrole>
+    <specials>
+      <ability>Poison 2</ability>
+    </specials>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="6" attack="4" health="1">
+    <name>Shadow Panther</name>
+    <type>Beast</type>
+    <faction>Elf</faction>
+    <squadrole>Unit</squadrole>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="2" attack="1" health="4">
+    <name>Silvintri Archer</name>
+    <type>Archer</type>
+    <faction>Elf</faction>
+    <squadrole>Unit</squadrole>
+    <specials>
+      <ability>Archery</ability>
+    </specials>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="2" attack="1" health="5">
+    <name>Silvintri Defender</name>
+    <type>Infantry</type>
+    <faction>Elf</faction>
+    <squadrole>Unit</squadrole>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="4" attack="2" health="3">
+    <name>Silvintri Warrior</name>
+    <type>Infantry</type>
+    <faction>Elf</faction>
+    <squadrole>Unit</squadrole>
+    <set>Novice</set>
+  </card>
+
+  <!-- Human Units -->
+
+  <card tier="1" ready="2" attack="1" health="5">
+    <name>Anglor Footman</name>
+    <type>Infantry</type>
+    <faction>Human</faction>
+    <squadrole>Unit</squadrole>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="4" attack="1" health="5">
+    <name>Anglor Pikeman</name>
+    <type>Infantry</type>
+    <faction>Human</faction>
+    <squadrole>Unit</squadrole>
+    <specials>
+      <ability>Pikeman</ability>
+    </specials>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="4" attack="1" health="5">
+    <name>Anglor Rider</name>
+    <type>Cavalry</type>
+    <faction>Human</faction>
+    <squadrole>Unit</squadrole>
+    <specials>
+      <ability>Trample</ability>
+    </specials>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="4" attack="1" health="3">
+    <name>Anglor Warmaiden</name>
+    <type>Infantry</type>
+    <faction>Human</faction>
+    <squadrole>Unit</squadrole>
+    <specials>
+      <ability>Block</ability>
+    </specials>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="4" attack="2" health="2">
+    <name>Estian Skullcrusher</name>
+    <type>Infantry</type>
+    <faction>Human</faction>
+    <squadrole>Unit</squadrole>
+    <specials>
+      <ability>Retaliate</ability>
+    </specials>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="6" attack="4" health="1">
+    <name>Estian Wardog</name>
+    <type>Beast</type>
+    <faction>Human</faction>
+    <squadrole>Unit</squadrole>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="4" attack="2" health="3">
+    <name>Estian Warrior</name>
+    <type>Infantry</type>
+    <faction>Human</faction>
+    <squadrole>Unit</squadrole>
+    <set>Novice</set>
+  </card>
+
+  <card tier="1" ready="2" attack="0" health="4">
+    <name>Wall of Spears</name>
+    <type>Barrier</type>
+    <faction>Human</faction>
+    <squadrole>Unit</squadrole>
+    <specials>
+      <ability>Retaliate 2</ability>
+    </specials>
+    <set>Novice</set>
+  </card>
+
+  <default>
+    <card 
+	tier="0" ready="0" health="0" attack="0" 
+	units="0" artifacts="0" spells="0">
+      <name>Name</name>
+      <type>Spell</type>
+      <squadrole>Unit</squadrole>
+      <faction>Neutral</faction>
+      <specials>
+	<ability>Zap</ability>
+      </specials>
+      <note>
+	<phrase></phrase>
+      </note>
+      <set>Novice</set>
+    </card>
+  </default>
+
+</cards>

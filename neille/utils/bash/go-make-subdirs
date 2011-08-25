@@ -1,0 +1,8 @@
+#!/bin/bash
+
+TARGET=$1
+BASH_BASE=$2
+
+GO_MAKE=$BASH_BASE/go-make
+
+find . -ipath './*/Makefile' -exec $GO_MAKE {} $TARGET ';'
