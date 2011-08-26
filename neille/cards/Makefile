@@ -22,3 +22,8 @@ $(CARD_FIELDS): $(CARD_FIELDS_XSL) $(CARDS_SRC)
 clean:
 	touch $(OUT)
 	rm $(OUT)
+
+gen-gitignore:
+	for out in $(OUT); do \
+	  echo $$out; \
+	done >.gitignore

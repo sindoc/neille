@@ -1,0 +1,5 @@
+#!/bin/bash
+
+PREFIX=main
+
+for i in $PREFIX.*; do echo \*${i/$PREFIX}; done | grep -v 'tex\|bib' >.gitignore
