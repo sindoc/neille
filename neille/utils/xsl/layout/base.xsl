@@ -24,7 +24,7 @@
 	<xsl:value-of select="/l:*/@default-width"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:value-of select="$col.default.width"/>
+	<xsl:value-of select="$unit.default.width"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
@@ -35,7 +35,7 @@
 	<xsl:value-of select="/l:*/@default-height"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:value-of select="$row.default.height"/>
+	<xsl:value-of select="$unit.default.height"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
@@ -178,49 +178,35 @@
 
   <xsl:template name="derive-width">
     <xsl:param name="node" select="."/>
-    <xsl:choose>
-      <xsl:when test="local-name($node) = 'col'">
-	<xsl:choose>
-	  <xsl:when test="$node/@width">
-	    <xsl:value-of select="number($onbx * $node/@width)"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:value-of 
-		select="number($onbx * $default-width)"/>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:value-of select="number(0)"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:variable name="scale">
+      <xsl:choose>
+	<xsl:when test="$node/@width">
+	  <xsl:value-of select="$node/@width"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="$default-width"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:value-of select="number($onbx * $scale)"/>
   </xsl:template>
 
   <xsl:template name="derive-height">
     <xsl:param name="node" select="."/>
-    <xsl:choose>
-      <xsl:when test="local-name($node/..) = 'row'">
-	<xsl:choose>
-	  <xsl:when test="$node/../../../@height">
-	    <xsl:value-of select="number($onby * $node/../../../@height)"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:choose>
-	      <xsl:when test="$node/../@height">
-		<xsl:value-of select="number($onby * $node/../@height)"/>
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:value-of 
-		    select="number($onby * $default-height)"/>
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:value-of select="number(0)"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:variable name="scale">
+      <xsl:choose>
+	<xsl:when test="$node/@height">
+	  <xsl:value-of select="$node/@height"/>
+	</xsl:when>
+	<xsl:when test="$node/..//@height">
+	  <xsl:value-of select="$node/..//@height"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="$default-height"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:value-of select="number($onby * $scale)"/>
   </xsl:template>
 
   <xsl:template name="calculate-region-w">
@@ -252,14 +238,10 @@
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="w">
-      <xsl:call-template name="calculate-region-w">
-	<xsl:with-param name="x" select="$x"/>
-      </xsl:call-template>
+      <xsl:call-template name="calculate-region-w"/>
     </xsl:variable>
     <xsl:variable name="h">
-      <xsl:call-template name="calculate-region-h">
-	<xsl:with-param name="y" select="$y"/>
-      </xsl:call-template>
+      <xsl:call-template name="calculate-region-h"/>
     </xsl:variable>
     <xsl:call-template name="racket.define">
       <xsl:with-param name="id">
