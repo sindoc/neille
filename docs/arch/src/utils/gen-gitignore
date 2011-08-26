@@ -1,5 +1,10 @@
 #!/bin/bash
 
 PREFIX=main
+INCLUDES="tex\|bib"
+OUT=.gitignore
 
-for i in $PREFIX.*; do echo \*${i/$PREFIX}; done | grep -v 'tex\|bib' >.gitignore
+for i in $PREFIX.* 
+do 
+  echo \*${i/$PREFIX};
+done | grep -v $INCLUDES >$OUT
