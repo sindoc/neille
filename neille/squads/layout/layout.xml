@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns="http://sina.khakbaz.com/2010/neille/ns/layout"
-	width="8" height="5" default-width="1" default-height="1"
-	onbx="108" onby="150">
+	width="8" 
+	height="5" 
+	onbx="108" 
+	onby="150">
+
   <row height="1.5">
     <col id="detail" model="deck" width="1.5"/>
     <col width="0.5"/>

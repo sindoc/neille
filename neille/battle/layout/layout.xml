@@ -3,9 +3,7 @@
 	width="7.5" 
 	height="4.7" 
 	onbx="108"
-	onby="150"
-	default-width="1"
-	default-height="1">
+	onby="150">
 
   <config>
     <param name="human"/>

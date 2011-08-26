@@ -16,6 +16,8 @@
   <xsl:param name="margin.left" select="$margin.default"/>
   <xsl:param name="orthonormal.basis.x.default" select="1"/>
   <xsl:param name="orthonormal.basis.y.default" select="1"/>
+  <xsl:param name="col.default.width" select="1"/>
+  <xsl:param name="row.default.height" select="1"/>
   <xsl:param name="init.proc.id">init-layout</xsl:param>
 
   <xsl:template name="construct-model-id">

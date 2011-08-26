@@ -18,8 +18,27 @@
 
   <xsl:strip-space elements="l:*"/>
 
-  <xsl:variable name="default-width" select="/l:*/@default-width"/>
-  <xsl:variable name="default-height" select="/l:*/@default-height"/>
+  <xsl:variable name="default-width">
+    <xsl:choose>
+      <xsl:when test="/l:*/@default-width">
+	<xsl:value-of select="/l:*/@default-width"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="$col.default.width"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+  <xsl:variable name="default-height">
+    <xsl:choose>
+      <xsl:when test="/l:*/@default-height">
+	<xsl:value-of select="/l:*/@default-height"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="$row.default.height"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
 
   <xsl:variable name="onbx">
     <xsl:choose>
