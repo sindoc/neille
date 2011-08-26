@@ -58,7 +58,7 @@
 	<xsl:call-template name="require.view"/>
 	<xsl:call-template name="newline-indent-1"/>
 	<xsl:call-template name="require.model"/>
-	<xsl:if test="/l:*/config/param">
+	<xsl:if test="/l:*/l:config/l:param">
 	  <xsl:call-template name="newline-indent-1"/>
 	  <xsl:call-template name="require.config"/>
 	</xsl:if>
