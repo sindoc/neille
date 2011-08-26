@@ -4,11 +4,8 @@
 ;; as the parameters defined in layout.xml
 
 (require 
- neille/base
  neille/view
- neille/utils/base
- neille/utils/syntax
- racket/gui/base)
+ neille/base)
 
 (provide human robot morale-callback)
 

@@ -7,7 +7,6 @@
  neille/cards/base
  neille/utils/syntax
  neille/squads/base
- games/cards
  racket/mpair
  (prefix-in ring: a-d/ring))
 
