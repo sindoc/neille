@@ -216,6 +216,24 @@
     </xsl:call-template>
   </xsl:template>
 
+  <xsl:template name="racket.collection-path">
+    <xsl:param name="collection"/>
+    <xsl:call-template name="postfix">
+      <xsl:with-param name="operator">collection-path</xsl:with-param>
+      <xsl:with-param name="operands" select="$collection"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template name="racket.collection-file-path">
+    <xsl:param name="file"/>
+    <xsl:param name="collection"/>
+    <xsl:call-template name="postfix">
+      <xsl:with-param name="operator">collection-file-path</xsl:with-param>
+      <xsl:with-param name="operands" 
+		      select="concat($file, $spc, $collection)"/>
+    </xsl:call-template>
+  </xsl:template>
+
   <xsl:template name="racket.define.proc">
     <xsl:param name="name"/>
     <xsl:param name="formal-params" select="''"/>

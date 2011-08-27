@@ -25,7 +25,7 @@
   <xsl:param name="card.image">1</xsl:param>
   <xsl:param name="card.image.basename.prefix">WS-</xsl:param>
   <xsl:param name="card.image.basename.suffix"></xsl:param>
-  <xsl:param name="card.image.path.prefix">/home/skh/n/cards/img/</xsl:param>
+  <xsl:param name="card.image.path.prefix">neille/cards/img/</xsl:param>
   <xsl:param name="card.image.path.suffix">.jpg</xsl:param>
   <xsl:param name="card.image.param.name">image</xsl:param>
   <xsl:param name="card.image.type">jpeg</xsl:param>

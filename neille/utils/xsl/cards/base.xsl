@@ -285,8 +285,7 @@
     </xsl:call-template>
   </xsl:template>
 
-  <xsl:template name="construct-card-image-path">
-    <xsl:param name="basename"/>
+  <xsl:template name="construct-card-image-dirname">
     <xsl:param name="scale"/>
     <xsl:call-template name="format-racket-value">
       <xsl:with-param name="type">string</xsl:with-param>
@@ -296,6 +295,15 @@
 	<xsl:text>-</xsl:text>
 	<xsl:value-of select="$scale"/>
 	<xsl:text>/</xsl:text>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template name="construct-card-image-filename">
+    <xsl:param name="basename"/>
+    <xsl:call-template name="format-racket-value">
+      <xsl:with-param name="type">string</xsl:with-param>
+      <xsl:with-param name="value">
 	<xsl:value-of select="$basename"/>
 	<xsl:value-of select="$card.image.path.suffix"/>
       </xsl:with-param>
@@ -303,11 +311,19 @@
   </xsl:template>
 
   <xsl:template name="make-bitmap">
-    <xsl:param name="path"/>
+    <xsl:param name="dirname"/>
+    <xsl:param name="filename"/>
     <xsl:param name="type" select="''"/>
     <xsl:call-template name="racket.make-object">
       <xsl:with-param name="class" select="$racket.bitmap.class.name"/>
-      <xsl:with-param name="args" select="concat($path, $spc, $type)"/>
+      <xsl:with-param name="args">
+	<xsl:call-template name="racket.collection-file-path">
+	  <xsl:with-param name="file" select="$filename"/>
+	  <xsl:with-param name="collection" select="$dirname"/>
+	</xsl:call-template>
+	<xsl:call-template name="space"/>
+	<xsl:value-of select="$type"/>
+      </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
 
@@ -342,10 +358,14 @@
 	<xsl:call-template name="racket.cons">
 	  <xsl:with-param name="car">
 	    <xsl:call-template name="make-bitmap">
-	      <xsl:with-param name="path">
-		<xsl:call-template name="construct-card-image-path">
-		  <xsl:with-param name="basename" select="$basename"/>
+	      <xsl:with-param name="dirname">
+		<xsl:call-template name="construct-card-image-dirname">
 		  <xsl:with-param name="scale" select="$scale"/>
+		</xsl:call-template>
+	      </xsl:with-param>
+	      <xsl:with-param name="filename">
+		<xsl:call-template name="construct-card-image-filename">
+		  <xsl:with-param name="basename" select="$basename"/>
 		</xsl:call-template>
 	      </xsl:with-param>
 	      <xsl:with-param name="type">
