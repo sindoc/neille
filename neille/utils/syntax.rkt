@@ -15,6 +15,7 @@
          (define region- region)
          (define model- model)
          (define children- children)
+         (send model- add-observer this)
          (super-new
           (root root-)
           (region region-)
@@ -70,39 +71,35 @@
     ((_ object msg args ...)
      #'((send object query msg) args ...))))
 
-(define-syntax (gen-card-accessors stx)
+(define-syntax (setup-card-fields stx)
   (syntax-case stx ()
-    ((_ card)
+    ((_ card query add update)
      (with-syntax
          ((fields 
-           #`(list
+           #`(begin
               #,@(map
                   (lambda (f)
                     (define field (datum->syntax stx f))
-                    #`(cons 
-                       '#,field
-                       (#,(make-id stx "ws-card-~a" field) card)))
+                    (define (make-id- pattern)
+                      (make-id stx pattern field))
+                    (define stem (make-id- "~a"))
+                    (define get-field (make-id- "get-~a"))
+                    (define set-field (make-id- "set-~a"))
+                    #`(begin
+                        (add '#,stem (#,(make-id- "ws-card-~a") card))
+                        (define/public (#,get-field) (query '#,stem))
+                        (define/public (#,set-field val) 
+                          (update '#,stem val)
+                          (send this notify)
+                          void)))
                   ws-card-fields))))
-       #'fields))))
-
-(define-syntax (gen-card-mutators stx)
-  (syntax-case stx ()
-    ((_ self)
-     (with-syntax
-         ((fields 
-           #`(list
-              #,@(map
-                  (lambda (f)
-                    (define field (datum->syntax stx f))
-                    #`(cons 
-                       '#,(make-id stx "set-~a" field)
-                       (lambda (x) (send+ self 'update-delegate '#,field x))))
-                  ws-card-fields))))
-       #'fields))))
+       #'(begin
+           fields
+           (add 'ws-card card))))))
 
 (define-syntax (setup-dispatcher stx)
   (syntax-case stx ()
-    ((_ dispatcher query add remove update)
+    ((_ dispatcher query add update remove)
      (with-syntax
 	 ((check-msg-type (generate-temporaries '(check-msg-type))))
        #'(begin

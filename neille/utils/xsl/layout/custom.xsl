@@ -22,9 +22,16 @@
 
   <xsl:template name="construct-model-id">
     <xsl:param name="stem" select="@id"/>
-    <xsl:call-template name="common-construct-id">
-      <xsl:with-param name="stem" select="$stem"/>
-    </xsl:call-template>
+    <xsl:choose>
+      <xsl:when test="starts-with(@model, $global.param.prefix)">
+	<xsl:call-template name="eval-reference"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:call-template name="common-construct-id">
+	  <xsl:with-param name="stem" select="$stem"/>
+	</xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="construct-view-id">
@@ -97,6 +104,9 @@
     <xsl:param name="stem" select="@id"/>
     <xsl:variable name="suffix">-view%</xsl:variable>
     <xsl:choose>
+      <xsl:when test="@view">
+	<xsl:value-of select="@view"/>
+      </xsl:when>
       <xsl:when test="@model and 
 		      not(starts-with(@model, $global.param.prefix))">
 	<xsl:value-of 

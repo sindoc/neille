@@ -30,7 +30,7 @@
 (define deck%
   (class observable%
     (super-new)
-    (init cards)
+    (init (cards null))
     (define cards- (stk:new* cards))
     (define/public (shuffle)
       (define lst (stk:to-list cards-))
@@ -55,7 +55,7 @@
 
 (define cardlist%
   (class observable%
-    (init cards)
+    (init (cards null))
     (define cards- (dls:new* eq? cards))
     (super-new)
     (define/public (to-list)
@@ -77,7 +77,7 @@
     (define name- name)
     (define initial-morale- 20)
     (define morale- initial-morale-)
-    (setup-dispatcher dispatcher- query add! remove! update!)
+    (setup-dispatcher dispatcher- query add! update! remove!)
     (define/public (get-morale) morale-)
     (define/public (get-initial-morale) initial-morale-)
     (define/public (set-morale new-morale)
@@ -97,20 +97,9 @@
     (super-new (cards squad))))
 
 (define card%
-  (class object%
+  (class observable%
     (init ws-card)
     (super-new)
     (define ws-card- ws-card)
-    (setup-dispatcher dispatcher- query add! remove! update!)
-    (define (setup-card-delegates)
-      (define delegates
-        (append 
-	 (gen-card-accessors ws-card-)
-	 (gen-card-mutators ws-card-)))
-      (add! 'ws-card ws-card-)
-      (map
-       (lambda (delegate handler)
-	 (add! delegate handler))
-       (map car delegates)
-       (map cdr delegates)))
-    (setup-card-delegates)))
+    (setup-dispatcher dispatcher- query add! update! remove!)
+    (setup-card-fields ws-card- query add! update!)))

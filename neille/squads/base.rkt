@@ -3,6 +3,7 @@
 (require
  neille/utils/syntax
  neille/model
+ neille/squads/layout/base
  neille/cards/base)
 
 (provide (all-defined-out))
@@ -23,3 +24,5 @@
 
 (define squads (make-squad* 1))
 (define -squads (make-squad* 2))
+
+(send table- show #t)

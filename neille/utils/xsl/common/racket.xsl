@@ -208,6 +208,14 @@
     </xsl:call-template>
   </xsl:template>
 
+  <xsl:template name="racket.all-from-out">
+    <xsl:param name="module-paths"/>
+    <xsl:call-template name="postfix">
+      <xsl:with-param name="operator">all-from-out</xsl:with-param>
+      <xsl:with-param name="operands" select="$module-paths"/>
+    </xsl:call-template>
+  </xsl:template>
+
   <xsl:template name="racket.define.proc">
     <xsl:param name="name"/>
     <xsl:param name="formal-params" select="''"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout xmlns="http://sina.khakbaz.com/2010/neille/ns/layout"
 	width="7.5" 
-	height="4.7" 
+	height="4.6" 
 	onbx="108"
 	onby="150">
 
@@ -27,8 +27,11 @@
   </row>
 
   <row>
-    <col id="deck"/>
+    <col id="deck"
+	 model="deck%"/>
+
     <col width="0.2"/>
+
     <col id="staging" 
 	 width="6" 
 	 model="cardlist%">
@@ -105,7 +108,8 @@
   <row height="0.1"/>
 
   <row>
-    <col id="-deck"/>
+    <col id="-deck"
+	 model="deck%"/>
     <col width="0.2"/>
     <col id="-staging" 
 	 width="6" 

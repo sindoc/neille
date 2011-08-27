@@ -90,3 +90,15 @@
       (send root- add-region new-region)
       (set! region- new-region)
       void)))
+
+(define card-view%
+  (class view%
+    (setup-view root- region- card- children-)
+    (define card-view- null)
+    (define (update-view)
+      (set! card-view- (send+ card- 'view))
+      card-view-)
+    (update-view)
+    (define/override (update)
+      (send root- remove-card card-view-)
+      (send root- add-card (update-view)))))

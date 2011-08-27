@@ -67,6 +67,8 @@
   <xsl:variable name="table-width-" select="$table-width * $onbx"/>
   <xsl:variable name="table-height-" select="$table-height * $onby"/>
 
+  <xsl:variable name="has-param" select="/l:*/l:config/l:param"/>
+
   <xsl:template name="output.head.content">
     <xsl:call-template name="racket.common.head.content"/>
     <xsl:call-template name="racket.require">
@@ -77,7 +79,7 @@
 	<xsl:call-template name="require.view"/>
 	<xsl:call-template name="newline-indent-1"/>
 	<xsl:call-template name="require.model"/>
-	<xsl:if test="/l:*/l:config/l:param">
+	<xsl:if test="$has-param">
 	  <xsl:call-template name="newline-indent-1"/>
 	  <xsl:call-template name="require.config"/>
 	</xsl:if>
@@ -86,7 +88,16 @@
     <xsl:call-template name="margin"/>
     <xsl:call-template name="racket.provide">
       <xsl:with-param name="specs">
+	<xsl:call-template name="newline-indent-1"/>
 	<xsl:call-template name="racket.all-defined-out"/>
+	<xsl:if test="$has-param">
+	  <xsl:call-template name="newline-indent-1"/>
+	  <xsl:call-template name="racket.all-from-out">
+	    <xsl:with-param name="module-paths">
+	      <xsl:call-template name="require.config"/>
+	    </xsl:with-param>
+	  </xsl:call-template>
+	</xsl:if>
       </xsl:with-param>
     </xsl:call-template>
     <xsl:call-template name="margin"/>
@@ -111,8 +122,6 @@
   <xsl:template match="l:layout">
     <xsl:apply-templates/>
     <xsl:call-template name="margin"/>
-    <xsl:apply-templates mode="add-to-table"/>
-    <xsl:call-template name="margin"/>
     <xsl:apply-templates mode="define-models"/>
     <xsl:call-template name="margin"/>
     <xsl:apply-templates mode="define-views"/>
@@ -125,7 +134,7 @@
     <xsl:call-template name="racket.define.proc">
       <xsl:with-param name="name" select="$init.proc.id"/>
       <xsl:with-param name="body">
-	<xsl:apply-templates mode="register-views"/>
+	<xsl:apply-templates mode="add-to-table"/>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -201,6 +210,14 @@
 	<xsl:when test="$node/..//@height">
 	  <xsl:value-of select="$node/..//@height"/>
 	</xsl:when>
+	<!--
+	<xsl:when test="$node/../../@height">
+	  <xsl:value-of select="$node/../../@height"/>
+	</xsl:when>
+	<xsl:when test="$node/../../../@height">
+	  <xsl:value-of select="$node/../../../@height"/>
+	</xsl:when>
+	-->
 	<xsl:otherwise>
 	  <xsl:value-of select="$default-height"/>
 	</xsl:otherwise>
@@ -309,30 +326,24 @@
   </xsl:template>
 
   <xsl:template match="l:col[@id]" mode="define-models">
-    <xsl:call-template name="racket.define">
-      <xsl:with-param name="id">
-	<xsl:call-template name="construct-model-id"/>
-      </xsl:with-param>
-      <xsl:with-param name="value">
-	<xsl:call-template name="eval-reference">
-	  <xsl:with-param name="datum" select="@model"/>
-	  <xsl:with-param name="alternative">
+    <xsl:choose>
+      <xsl:when test="starts-with(@model, $global.param.prefix)"></xsl:when>
+      <xsl:otherwise>
+	<xsl:call-template name="racket.define">
+	  <xsl:with-param name="id">
+	    <xsl:call-template name="construct-model-id"/>
+	  </xsl:with-param>
+	  <xsl:with-param name="value">
 	    <xsl:call-template name="racket.new">
 	      <xsl:with-param name="class">
 		<xsl:call-template name="construct-model-class-name"/>
 	      </xsl:with-param>
-	      <xsl:with-param name="args">
-		<xsl:call-template name="racket.make-named-arg">
-		  <xsl:with-param name="argname">cards</xsl:with-param>
-		  <xsl:with-param name="arg" select="$racket.null"/>
-		</xsl:call-template>
-	      </xsl:with-param>
 	    </xsl:call-template>
 	  </xsl:with-param>
 	</xsl:call-template>
-      </xsl:with-param>
-    </xsl:call-template>
-    <xsl:call-template name="newline"/>
+	<xsl:call-template name="newline"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="l:col[@id]" mode="define-views">
@@ -395,16 +406,21 @@
   </xsl:template>
 
   <xsl:template match="l:col[@id]" mode="register-views">
-    <xsl:call-template name="racket.send">
-      <xsl:with-param name="object">
-	<xsl:call-template name="construct-model-id"/>
-      </xsl:with-param>
-      <xsl:with-param name="message">add-observer</xsl:with-param>
-      <xsl:with-param name="args">
-	<xsl:call-template name="construct-view-id"/>
-      </xsl:with-param>
-    </xsl:call-template>
-    <xsl:call-template name="newline"/>
+    <xsl:choose>
+      <xsl:when test="starts-with(@model, $global.param.prefix)"></xsl:when>
+      <xsl:otherwise>
+	<xsl:call-template name="racket.send">
+	  <xsl:with-param name="object">
+	    <xsl:call-template name="construct-model-id"/>
+	  </xsl:with-param>
+	  <xsl:with-param name="message">add-observer</xsl:with-param>
+	  <xsl:with-param name="args">
+	    <xsl:call-template name="construct-view-id"/>
+	  </xsl:with-param>
+	</xsl:call-template>
+	<xsl:call-template name="newline"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template name="show-table">
@@ -415,16 +431,8 @@
   </xsl:template>
 
   <xsl:template name="eval-reference">
-    <xsl:param name="datum"/>
-    <xsl:param name="alternative" select="$datum"/>
-    <xsl:choose>
-      <xsl:when test="starts-with($datum, $global.param.prefix)">
-	<xsl:value-of select="substring-after($datum, $global.param.prefix)"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:value-of select="$alternative"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:param name="datum" select="@model"/>
+    <xsl:value-of select="substring-after($datum, $global.param.prefix)"/>
   </xsl:template>
 
 </xsl:stylesheet>
