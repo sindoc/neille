@@ -35,16 +35,60 @@
 (define (dead? c) (q c 'health 0))
 (define (ready? c) (q c 'ready 0))
 
+(define card-view-selector car)
+(define card-detail-view-selector cadr)
+
+(define (get-card-scale-thunks card)
+  (ws-card-graphic-scales 
+   (send card get-image)))
+
+(define (make-card-view card bitmap)
+  (let ((view 
+         (make-card
+          bitmap bitmap
+          (send card get-id)
+          card)))
+    (send view flip)
+    view))
+
+(define (make-card-view-maker delegate scale-selector)
+  (lambda (card-)
+    (define bitmap 
+      ((scale-selector (get-card-scale-thunks card-))))
+    (define view (make-card-view card- bitmap))
+    (send+ card- 'add-delegate delegate view)))
+
+(define view-maker-delegate 'make-view)
+(define detail-view-maker-delegate 'make-detail-view)
+(define clone-maker 'make-clone)
+
+(define (make-card-cloner stem)
+  (lambda ()
+    (define new-card (new card% (ws-card (send+ stem 'ws-card))))
+    (send+ 
+     new-card 'add-delegate view-maker-delegate
+     (send+ stem view-maker-delegate))
+    (send+ 
+     new-card 'add-delegate detail-view-maker-delegate
+     (send+ stem detail-view-maker-delegate))
+    (send+ 
+     new-card 'add-delegate clone-maker
+     (send+ stem clone-maker))
+    new-card))
+
 (define cards 
   (map 
    (lambda (ws-card)
      (define card (new card% (ws-card ws-card)))
-     (send+
-      card 'add-delegate 'make-view
-      (λ (c)
-	 (define bmp (car (ws-card-graphic-scales (send card get-image))))
-	 (define view (make-card bmp bmp 0 0))
-	 (send+ c 'add-delegate 'view view)))
+     (send+ 
+      card 'add-delegate view-maker-delegate
+      (make-card-view-maker 'view card-view-selector))
+     (send+ 
+      card 'add-delegate detail-view-maker-delegate
+      (make-card-view-maker 'detail-view card-detail-view-selector))
+     (send+ 
+      card 'add-delegate clone-maker
+      (make-card-cloner card))
      ((send+ card 'make-view) card)
      card)
    ws-cards))
