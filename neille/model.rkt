@@ -17,7 +17,7 @@
     (define/public (add-observer observer)
       (dls:attach-first! observers observer))
     (define/public (observer-list)
-      observers)
+      (send observers to-list))
     (define/public (notify)
       (unless (dls:empty? observers)
 	(dls:map!
@@ -58,6 +58,9 @@
     (init (cards null))
     (define cards- (dls:new* eq? cards))
     (super-new)
+    (define/public (from-list cards)
+      (set! cards- (dls:new* eq? cards))
+      (send this notify))
     (define/public (to-list)
       (dls:to-list cards-))
     (define/public (map! proc)
@@ -92,9 +95,17 @@
   
 (define squad%
   (class cardlist%
-    (init hero-selector squad)
-    (define hero- (hero-selector squad))
-    (super-new (cards squad))))
+    (init hero squad)
+    (define squad- squad)
+    (define hero- hero)
+    (super-new (cards squad-))
+    (define (include-hero c)
+      (eq? hero- c))
+    (define (exclude-hero c)
+      (not (include-hero c)))
+    (define/public (get-units)
+      (filter exclude-hero (send this to-list)))
+    (define/public (get-hero) hero-)))
 
 (define card%
   (class observable%

@@ -28,7 +28,9 @@
       (set! root- new-root))
     (define/public (get-model) model-)
     (define/public (set-model new-model)
-      (set! model- new-model))
+      (set! model- new-model)
+      (send this update)
+      void)
     (define/public (get-children) children-)
     (define/public (set-children new-children)
       (set! children- new-children))
@@ -50,17 +52,22 @@
 (define cardlist-view%
   (class view%
     (setup-view root- region- cardlist- children-)
+    (define max- (length children-))
     (define/override (update)
       (for-each
        (lambda (child card)
-         (send 
-          root- remove-cards 
-          (list (send+ card 'view)))
-         (send 
-          root- add-cards-to-region 
-          (list (send+ card 'view)) child))
-       (take children- (send cardlist- length))
-       (send cardlist- to-list)))))
+         (define card-view (send+ card 'view))
+         (send root- remove-cards (list card-view))
+         (send root- add-cards-to-region (list card-view) child))
+       (take children- (min (send cardlist- length) max-))
+       (take (send cardlist- to-list) max-)))))
+
+;(define paged-cardlist-view%
+;  (class cardlist-view%
+;    (setup-view root region- cardlist- children-)
+;    (define max- (length children-))
+;    (define/override (update)
+
 
 (define morale-view%
   (class view%
@@ -99,6 +106,10 @@
       (set! card-view- (send+ card- 'view))
       card-view-)
     (update-view)
+    (define/public (set-view-delegate new-delegate)
+      (set! view-delegate- new-delegate))
     (define/override (update)
       (send root- remove-card card-view-)
-      (send root- add-card (update-view)))))
+      (send 
+       root- add-cards-to-region 
+       (list (update-view)) region-))))
