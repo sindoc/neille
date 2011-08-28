@@ -16,15 +16,19 @@
   <xsl:param name="margin.left" select="$margin.default"/>
   <xsl:param name="orthonormal.basis.x.default" select="1"/>
   <xsl:param name="orthonormal.basis.y.default" select="1"/>
-  <xsl:param name="unit.default.width" select="1"/>
-  <xsl:param name="unit.default.height" select="1"/>
+  <xsl:param name="region.default.width" select="1"/>
+  <xsl:param name="region.default.height" select="1"/>
+  <xsl:param name="region.default.constructor">make-region</xsl:param>
+  <xsl:param name="region.default.callback" select="$racket.false.value"/>
   <xsl:param name="init.proc.id">init-layout</xsl:param>
 
   <xsl:template name="construct-model-id">
     <xsl:param name="stem" select="@id"/>
     <xsl:choose>
       <xsl:when test="starts-with(@model, $global.param.prefix)">
-	<xsl:call-template name="eval-reference"/>
+	<xsl:call-template name="eval-reference">
+	  <xsl:with-param name="datum" select="@model"/>
+	</xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
 	<xsl:call-template name="common-construct-id">

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns="http://sina.khakbaz.com/2010/neille/ns/layout"
+	unit-constructor="make-button-region"
+	unit-callback="onclick"
 	width="9.6" 
-	height="4.5" 
+	height="3.7" 
 	onbx="108" 
 	onby="150">
 
@@ -11,43 +13,50 @@
     <param name="meta-units"/>
     <param name="detail-card"/>
     <param name="hero-card"/>
-    <param name="previous-heroes"/>
-    <param name="next-heroes"/>
-    <param name="previous-units"/>
-    <param name="next-units"/>
+    <param name="previous-cards"/>
+    <param name="next-cards"/>
   </config>
 
   <row height="0.15">
     <col id="meta-detail"
 	 label="Detail View"
 	 model="$meta-detail"
+	 constructor="make-region"
 	 view="view%"
-	 width="1.5"/>
-
-    <col width="0.3"/>
-
-    <col id="meta-units" 
-	 model="$meta-units"
-	 view="view%"
-	 label="Units"
-	 width="6"/>
+	 width="2"/>
 
     <col width="0.3"/>
 
     <col id="meta-hero"
+	 constructor="make-region"
 	 model="$meta-hero"
 	 view="view%"
-	 label="Hero"
-	 width="1.5"/>
+	 label="Hero"/>
+
+    <col width="0.1"/>
+
+    <col id="meta-units" 
+	 constructor="make-region"
+	 model="$meta-units"
+	 view="view%"
+	 label="Units"
+	 width="6"/>
   </row>
 
-  <row height="1.5">
+  <row height="2">
     <col id="detail" 
 	 model="$detail-card"
 	 view="card-view%"
-	 width="1.5"/>
+	 width="2"/>
 
     <col width="0.3"/>
+
+    <col id="hero" 
+	 model="$hero-card"
+	 view="card-view%"
+	 height="1"/>
+
+    <col width="0.1"/>
 
     <col id="units" 
 	 model="cardlist%" 
@@ -58,12 +67,6 @@
       </row>
     </col>
 
-    <col width="0.3"/>
-
-    <col id="hero" 
-	 model="$hero-card"
-	 view="card-view%"
-	 width="1.5"/>
   </row>
 
   <row height="0.2"/>
@@ -71,16 +74,16 @@
   <row height="0.15">
     <col width="3.75"/>
 
-    <col id="previous-heroes"
-	 model="$previous-heroes"
+    <col id="previous-cards"
+	 model="$previous-cards"
 	 view="view%"
 	 label="&lt; Previous"
 	 width="0.8"/>
 
     <col width="0.2"/>
 
-    <col id="next-heroes" 
-	 model="$next-heroes"
+    <col id="next-cards" 
+	 model="$next-cards"
 	 view="view%"
 	 label="Next &gt;"
 	 width="0.8"/>
@@ -90,41 +93,7 @@
 
   <row height="1">
     <col width="0.25"/>
-    <col id="hero-list"
-	 model="cardlist%"
-	 width="9">
-      <row>
-	<col/><col/><col/><col/><col/>
-	<col/><col/><col/><col/>
-      </row>
-    </col>
-  </row>
-
-  <row height="0.2"/>
-
-  <row height="0.15">
-    <col width="3.75"/>
-
-    <col id="previous-units"
-	 model="$previous-units"
-	 view="view%"
-	 label="&lt; Previous"
-	 width="0.8"/>
-
-    <col width="0.2"/>
-
-    <col id="next-units" 
-	 model="$next-units"
-	 view="view%"
-	 label="Next &gt;"
-	 width="0.8"/>
-  </row>
-
-  <row height="0.05"/>
-
-  <row height="1">
-    <col width="0.25"/>
-    <col id="unit-list" 
+    <col id="card-list" 
 	 model="cardlist%"
 	 width="9">
       <row>

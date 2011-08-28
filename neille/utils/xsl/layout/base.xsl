@@ -24,7 +24,7 @@
 	<xsl:value-of select="/l:*/@default-width"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:value-of select="$unit.default.width"/>
+	<xsl:value-of select="$region.default.width"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
@@ -35,7 +35,29 @@
 	<xsl:value-of select="/l:*/@default-height"/>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:value-of select="$unit.default.height"/>
+	<xsl:value-of select="$region.default.height"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+  <xsl:variable name="default-region-maker">
+    <xsl:choose>
+      <xsl:when test="/l:*/@unit-constructor">
+	<xsl:value-of select="/l:*/@unit-constructor"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="$region.default.constructor"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+  <xsl:variable name="default-region-callback">
+    <xsl:choose>
+      <xsl:when test="/l:*/@unit-callback">
+	<xsl:value-of select="/l:*/@unit-callback"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="$region.default.callback"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
@@ -260,37 +282,44 @@
     <xsl:variable name="h">
       <xsl:call-template name="calculate-region-h"/>
     </xsl:variable>
+    <xsl:variable name="callback">
+      <xsl:choose>
+	<xsl:when test="@callback">
+	  <xsl:call-template name="eval-reference">
+	    <xsl:with-param name="datum" select="@callback"/>
+	  </xsl:call-template>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="$default-region-callback"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="constructor">
+      <xsl:choose>
+	<xsl:when test="@constructor">
+	  <xsl:call-template name="eval-reference">
+	    <xsl:with-param name="datum" select="@constructor"/>
+	  </xsl:call-template>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="$default-region-maker"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:call-template name="racket.define">
       <xsl:with-param name="id">
 	<xsl:call-template name="construct-region-id"/>
       </xsl:with-param>
       <xsl:with-param name="value">
-	<xsl:choose>
-	  <xsl:when test="@constructor = 
-			  $racket.games.cards.make-background-region-">
-	    <xsl:call-template 
-		name="racket.games.cards.make-background-region">
-	      <xsl:with-param name="x" select="$x"/>
-	      <xsl:with-param name="y" select="$y"/>
-	      <xsl:with-param name="w" select="$w"/>
-	      <xsl:with-param name="h" select="$h"/>
-	      <xsl:with-param name="paint-callback">
-		<xsl:call-template name="eval-reference">
-		  <xsl:with-param name="datum" select="@callback"/>
-		</xsl:call-template>
-	      </xsl:with-param>
-	    </xsl:call-template>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:call-template name="racket.games.cards.make-region">
-	      <xsl:with-param name="label" select="$label"/>
-	      <xsl:with-param name="x" select="$x"/>
-	      <xsl:with-param name="y" select="$y"/>
-	      <xsl:with-param name="w" select="$w"/>
-	      <xsl:with-param name="h" select="$h"/>
-	    </xsl:call-template>
-	  </xsl:otherwise>
-	</xsl:choose>
+	<xsl:call-template name="racket.games.cards.dispatch-region-maker">
+	  <xsl:with-param name="maker" select="$constructor"/>
+	  <xsl:with-param name="x" select="$x"/>
+	  <xsl:with-param name="y" select="$y"/>
+	  <xsl:with-param name="w" select="$w"/>
+	  <xsl:with-param name="h" select="$h"/>
+	  <xsl:with-param name="label" select="$label"/>
+	  <xsl:with-param name="callback" select="$callback"/>
+	</xsl:call-template>
       </xsl:with-param>
     </xsl:call-template>
     <xsl:call-template name="newline"/>
@@ -431,8 +460,16 @@
   </xsl:template>
 
   <xsl:template name="eval-reference">
-    <xsl:param name="datum" select="@model"/>
-    <xsl:value-of select="substring-after($datum, $global.param.prefix)"/>
+    <xsl:param name="datum"/>
+    <xsl:param name="alternative" select="$datum"/>
+    <xsl:choose>
+      <xsl:when test="starts-with($datum, $global.param.prefix)">
+	<xsl:value-of select="substring-after($datum, $global.param.prefix)"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of select="$alternative"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>

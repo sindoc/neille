@@ -14,8 +14,6 @@
   <xsl:param name="racket.require.games.cards">games/cards</xsl:param>
   <xsl:param name="racket.default.struct.options">#:transparent 
   #:mutable</xsl:param>
-
-  <xsl:param name="racket.games.cards.make-region-">make-region</xsl:param>
   <xsl:param name="racket.games.cards.make-background-region-"
 	     select="'make-background-region'"/>
 
@@ -242,11 +240,13 @@
       <xsl:with-param name="operator">define</xsl:with-param>
       <xsl:with-param 
 	  name="operands" 
-	  select="concat($opr, $name, $formal-params, $cpr, $nwl, $ind-1, $body)"/>
+	  select="concat($opr, $name, $formal-params, $cpr, $nwl, 
+		  $ind-1, $body)"/>
     </xsl:call-template>
   </xsl:template>
 
-  <xsl:template name="racket.games.cards.make-region">
+  <xsl:template name="racket.games.cards.dispatch-region-maker">
+    <xsl:param name="maker"/>
     <xsl:param name="x"/>
     <xsl:param name="y"/>
     <xsl:param name="w"/>
@@ -254,28 +254,21 @@
     <xsl:param name="label" select="$racket.false.value"/>
     <xsl:param name="callback" select="$racket.false.value"/>
     <xsl:call-template name="postfix">
-      <xsl:with-param name="operator">make-region</xsl:with-param>
+      <xsl:with-param name="operator" select="$maker"/>
       <xsl:with-param name="operands">
-	<xsl:value-of 
-	    select="concat($x, $spc, $y, $spc, $w, $spc, $h, $spc,
-		    $label, $spc, $callback)"/>
-      </xsl:with-param>
-    </xsl:call-template>
-  </xsl:template>
-
-  <xsl:template name="racket.games.cards.make-background-region">
-    <xsl:param name="x"/>
-    <xsl:param name="y"/>
-    <xsl:param name="w"/>
-    <xsl:param name="h"/>
-    <xsl:param name="paint-callback"/>
-    <xsl:call-template name="racket.apply">
-      <xsl:with-param name="proc" 
-		      select="$racket.games.cards.make-background-region-"/>
-      <xsl:with-param name="args">
-	<xsl:value-of 
-	    select="concat($x, $spc, $y, $spc, $w, $spc, $h, $spc,
-		    $paint-callback)"/>
+	<xsl:value-of select="$x"/>
+	<xsl:call-template name="space"/>
+	<xsl:value-of select="$y"/>
+	<xsl:call-template name="space"/>
+	<xsl:value-of select="$w"/>
+	<xsl:call-template name="space"/>
+	<xsl:value-of select="$h"/>
+	<xsl:if test="$maker != $racket.games.cards.make-background-region-">
+	  <xsl:call-template name="space"/>
+	  <xsl:value-of select="$label"/>
+	</xsl:if>
+	<xsl:call-template name="space"/>
+	<xsl:value-of select="$callback"/>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -309,7 +302,7 @@
   </xsl:template>
   
   <xsl:template name="racket.s-exp">
-    <xsl:param name="content"/>
+    <xsl:param name="content" select="''"/>
     <xsl:value-of select="concat($opr, $content, $cpr)"/>
   </xsl:template>
 
@@ -334,6 +327,21 @@
       </xsl:with-param>
     </xsl:call-template>
     <xsl:call-template name="margin"/>    
+  </xsl:template>
+
+  <xsl:template name="racket.lambda">
+    <xsl:param name="args" select="''"/>
+    <xsl:param name="body"/>
+    <xsl:call-template name="postfix">
+      <xsl:with-param name="operator">lambda</xsl:with-param>
+      <xsl:with-param name="operands">
+	<xsl:call-template name="racket.s-exp">
+	  <xsl:with-param name="content" select="$args"/>
+	</xsl:call-template>
+	<xsl:call-template name="space"/>
+	<xsl:value-of select="$body"/>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:template>
 
 </xsl:stylesheet>
