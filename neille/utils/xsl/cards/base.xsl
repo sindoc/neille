@@ -310,19 +310,23 @@
     </xsl:call-template>
   </xsl:template>
 
-  <xsl:template name="make-bitmap">
+  <xsl:template name="make-bitmap-thunk">
     <xsl:param name="dirname"/>
     <xsl:param name="filename"/>
     <xsl:param name="type" select="''"/>
-    <xsl:call-template name="racket.make-object">
-      <xsl:with-param name="class" select="$racket.bitmap.class.name"/>
-      <xsl:with-param name="args">
-	<xsl:call-template name="racket.collection-file-path">
-	  <xsl:with-param name="file" select="$filename"/>
-	  <xsl:with-param name="collection" select="$dirname"/>
+    <xsl:call-template name="racket.lambda">
+      <xsl:with-param name="body">
+	<xsl:call-template name="racket.make-object">
+	  <xsl:with-param name="class" select="$racket.bitmap.class.name"/>
+	  <xsl:with-param name="args">
+	    <xsl:call-template name="racket.collection-file-path">
+	      <xsl:with-param name="file" select="$filename"/>
+	      <xsl:with-param name="collection" select="$dirname"/>
+	    </xsl:call-template>
+	    <xsl:call-template name="space"/>
+	    <xsl:value-of select="$type"/>
+	  </xsl:with-param>
 	</xsl:call-template>
-	<xsl:call-template name="space"/>
-	<xsl:value-of select="$type"/>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -357,7 +361,7 @@
 	</xsl:variable>
 	<xsl:call-template name="racket.cons">
 	  <xsl:with-param name="car">
-	    <xsl:call-template name="make-bitmap">
+	    <xsl:call-template name="make-bitmap-thunk">
 	      <xsl:with-param name="dirname">
 		<xsl:call-template name="construct-card-image-dirname">
 		  <xsl:with-param name="scale" select="$scale"/>
