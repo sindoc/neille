@@ -131,4 +131,4 @@
 	      dispatcher msg
 	      (lambda ()
 		(raise-mismatch-error 
-		 (object-name this) "Unknown message" msg)))))))))
+		 (object-name this) "Unknown message " msg)))))))))
