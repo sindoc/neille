@@ -54,14 +54,16 @@
     (setup-view root- region- cardlist- children-)
     (define max- (length children-))
     (define/public (get-capacity) max-)
+    (define (cardlist-length)
+      (send cardlist- get-length))
     (define/override (update)
       (for-each
        (lambda (child card)
          (define card-view (send+ card 'view))
          (send root- remove-cards (list card-view))
          (send root- add-cards-to-region (list card-view) child))
-       (take children- (min (send cardlist- get-length) max-))
-       (take (send cardlist- to-list) (length children-))))))
+       (take children- (min (cardlist-length) max-))
+       (take (send cardlist- to-list) (min (cardlist-length) max-))))))
 
 (define morale-view%
   (class view%

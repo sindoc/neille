@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns="http://sina.khakbaz.com/2010/neille/ns/layout"
-	unit-constructor="make-button-region"
-	unit-callback="onclick"
-	width="9.6" 
+	width="9.9" 
 	height="3.7" 
-	onbx="108" 
-	onby="150">
+	onbx="113" 
+	onby="155">
 
   <config>
     <param name="meta-detail"/>
@@ -15,6 +13,7 @@
     <param name="hero-card"/>
     <param name="previous-cards"/>
     <param name="next-cards"/>
+    <param name="trash"/>
   </config>
 
   <row height="0.15">
@@ -59,7 +58,8 @@
     <col width="0.1"/>
 
     <col id="units" 
-	 model="cardlist%" 
+	 model="cardlist-%"
+	 view="cardlist-view%"
 	 width="6"
 	 height="1">
       <row>
@@ -78,7 +78,8 @@
 	 model="$previous-cards"
 	 view="view%"
 	 label="&lt; Previous"
-	 width="0.8"/>
+	 width="0.8"
+	 constructor="make-button-region"/>
 
     <col width="0.2"/>
 
@@ -86,7 +87,8 @@
 	 model="$next-cards"
 	 view="view%"
 	 label="Next &gt;"
-	 width="0.8"/>
+	 width="0.8"
+	 constructor="make-button-region"/>
   </row>
 
   <row height="0.05"/>
@@ -95,11 +97,19 @@
     <col width="0.25"/>
     <col id="card-list" 
 	 model="cardlist%"
-	 width="9">
+	 width="7">
       <row>
-	<col/><col/><col/><col/><col/>
+	<col/><col/><col/>
 	<col/><col/><col/><col/>
       </row>
     </col>
+
+    <col width="0.2"/>
+
+    <col id="trash"
+	 width="1.2"
+	 model="$trash"
+	 view="view%"
+	 label="Drag to remove card"/>
   </row>
 </layout>

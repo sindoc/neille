@@ -5,13 +5,15 @@
 
 (provide (all-defined-out))
 
-(define detail-card (car cards))
-(define hero-card (cadr cards))
+(define dummy-card (car cards))
+(define detail-card dummy-card)
+(define hero-card dummy-card)
 
+(define trash null)
 (define meta-detail null)
 (define meta-hero null)
 (define meta-units null)
 (define previous-cards null)
 (define next-cards null)
 
-(define (onclick) void)
+(define (on-click) void)

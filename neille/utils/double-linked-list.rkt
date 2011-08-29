@@ -5,7 +5,8 @@
 (provide 
  new new* length empty? full?
  map map! map< map<! to-list
- attach-first! attach-last!)
+ attach-first! attach-last! attach-middle!
+ detach-first! detach-last! detach-middle!)
 
 (define 
   (generic-traversal 
