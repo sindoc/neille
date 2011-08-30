@@ -40,3 +40,8 @@
   (values 
    (make-squad- 2) 
    (make-squad- 3)))
+
+(define-values (active-squad -active-squad)
+  (values
+   (car squads)
+   (car -squads)))
