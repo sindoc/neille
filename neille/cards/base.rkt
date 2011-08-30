@@ -51,16 +51,21 @@
     (send view flip)
     view))
 
-(define (make-card-view-maker delegate scale-selector)
-  (lambda (card-)
-    (define bitmap 
-      ((scale-selector (get-card-scale-thunks card-))))
-    (define view (make-card-view card- bitmap))
-    (send+ card- 'add-delegate delegate view)))
+(define (make-card-bitmap card scale-selector)
+  (define meta-image 
+    (scale-selector 
+     (get-card-meta-images card)))
+  (make-object bitmap%
+    (collection-file-path
+     (meta-image-filename meta-image)
+     (meta-image-dirname meta-image))
+    (meta-image-type meta-image)))
 
-(define view-maker-delegate 'make-view)
-(define detail-view-maker-delegate 'make-detail-view)
-(define clone-maker 'make-clone)
+(define (make-card-view-maker delegate scale-selector)
+  (lambda (card)
+    (define bitmap (make-card-bitmap card scale-selector))
+    (define view (make-card-view card bitmap))
+    (send+ card 'add-delegate delegate view)))
 
 (define (make-card-cloner stem)
   (lambda ()

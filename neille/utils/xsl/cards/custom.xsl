@@ -38,6 +38,15 @@
 	     select="$racket.default.struct.options"/>
   <xsl:param name="card.image.struct.ordered.fields">type basename path-prefix 
   path-suffix scales</xsl:param>
+
+  <xsl:param name="meta.image.struct.id">meta-image</xsl:param>
+  <xsl:param name="meta.image.struct.options" 
+	     select="$racket.default.struct.options"/>
+  <xsl:param name="meta.image.struct.ordered.fields">dirname filename 
+  type</xsl:param>
+  <xsl:param name="meta.image.struct.constructor.id"
+	     select="concat('make-', $meta.image.struct.id)"/>
+
   <xsl:param name="card.registrar.name">register-card</xsl:param>
   <xsl:param name="card.id.param.name">id</xsl:param>
   <xsl:param name="card.struct.id">ws-card</xsl:param>

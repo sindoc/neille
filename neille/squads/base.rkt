@@ -44,8 +44,9 @@
     cards)))
     
 (define (update-detail-view card)
-  (define old-region (send detail-view get-region))
   
+  (define old-region (send detail-view get-region))
+ 
   (define new-region
     (make-background-region
      (region-x old-region)
@@ -55,9 +56,8 @@
      (lambda (dc x y w h)
        (send 
         dc draw-bitmap 
-        ((card-detail-view-selector 
-          (get-card-scale-thunks card))) 
-        10 10))))
+        (make-card-bitmap card card-detail-view-selector)
+        x y))))
   
   (send table- remove-region old-region)
   (send table- add-region new-region)

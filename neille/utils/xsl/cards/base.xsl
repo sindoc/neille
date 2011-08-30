@@ -32,6 +32,7 @@
     <xsl:call-template name="define-card-struct"/>
     <xsl:if test="$card.image != ''">
       <xsl:call-template name="define-card-image-struct"/>
+      <xsl:call-template name="define-meta-image-struct"/>
     </xsl:if>
     <xsl:apply-templates select="//c:default" mode="registrar"/>
     <xsl:call-template name="margin"/>
@@ -118,9 +119,24 @@
 
   <xsl:template name="define-card-image-struct">
     <xsl:call-template name="racket.define-struct">
-      <xsl:with-param name="id" select="$card.image.struct.id"/>
-      <xsl:with-param name="fields" select="$card.image.struct.ordered.fields"/>
-      <xsl:with-param name="options" select="$card.image.struct.options"/>
+      <xsl:with-param name="id" 
+		      select="$card.image.struct.id"/>
+      <xsl:with-param name="fields" 
+		      select="$card.image.struct.ordered.fields"/>
+      <xsl:with-param name="options" 
+		      select="$card.image.struct.options"/>
+    </xsl:call-template>
+    <xsl:call-template name="margin"/>
+  </xsl:template>
+
+  <xsl:template name="define-meta-image-struct">
+    <xsl:call-template name="racket.define-struct">
+      <xsl:with-param name="id" 
+		      select="$meta.image.struct.id"/>
+      <xsl:with-param name="fields" 
+		      select="$meta.image.struct.ordered.fields"/>
+      <xsl:with-param name="options" 
+		      select="$meta.image.struct.options"/>
     </xsl:call-template>
     <xsl:call-template name="margin"/>
   </xsl:template>
@@ -287,45 +303,40 @@
 
   <xsl:template name="construct-card-image-dirname">
     <xsl:param name="scale"/>
-    <xsl:call-template name="format-racket-value">
-      <xsl:with-param name="type">string</xsl:with-param>
-      <xsl:with-param name="value">
-	<xsl:value-of select="$card.image.path.prefix"/>
-	<xsl:value-of select="$card.image.type"/>
-	<xsl:text>-</xsl:text>
-	<xsl:value-of select="$scale"/>
-	<xsl:text>/</xsl:text>
-      </xsl:with-param>
-    </xsl:call-template>
+    <xsl:value-of select="$card.image.path.prefix"/>
+    <xsl:value-of select="$card.image.type"/>
+    <xsl:text>-</xsl:text>
+    <xsl:value-of select="$scale"/>
+    <xsl:text>/</xsl:text>
   </xsl:template>
 
   <xsl:template name="construct-card-image-filename">
     <xsl:param name="basename"/>
-    <xsl:call-template name="format-racket-value">
-      <xsl:with-param name="type">string</xsl:with-param>
-      <xsl:with-param name="value">
-	<xsl:value-of select="$basename"/>
-	<xsl:value-of select="$card.image.path.suffix"/>
-      </xsl:with-param>
-    </xsl:call-template>
+    <xsl:value-of select="$basename"/>
+    <xsl:value-of select="$card.image.path.suffix"/>
   </xsl:template>
 
-  <xsl:template name="make-bitmap-thunk">
+  <xsl:template name="make-meta-image">
     <xsl:param name="dirname"/>
     <xsl:param name="filename"/>
-    <xsl:param name="type" select="''"/>
-    <xsl:call-template name="racket.lambda">
-      <xsl:with-param name="body">
-	<xsl:call-template name="racket.make-object">
-	  <xsl:with-param name="class" select="$racket.bitmap.class.name"/>
-	  <xsl:with-param name="args">
-	    <xsl:call-template name="racket.collection-file-path">
-	      <xsl:with-param name="file" select="$filename"/>
-	      <xsl:with-param name="collection" select="$dirname"/>
-	    </xsl:call-template>
-	    <xsl:call-template name="space"/>
-	    <xsl:value-of select="$type"/>
-	  </xsl:with-param>
+    <xsl:param name="type"/>
+    <xsl:call-template name="racket.apply">
+      <xsl:with-param name="proc" 
+		      select="$meta.image.struct.constructor.id"/>
+      <xsl:with-param name="args">
+	<xsl:call-template name="format-racket-value">
+	  <xsl:with-param name="type">string</xsl:with-param>
+	  <xsl:with-param name="value" select="$dirname"/>
+	</xsl:call-template>
+	<xsl:call-template name="space"/>
+	<xsl:call-template name="format-racket-value">
+	  <xsl:with-param name="type">string</xsl:with-param>
+	  <xsl:with-param name="value" select="$filename"/>
+	</xsl:call-template>
+	<xsl:call-template name="space"/>
+	<xsl:call-template name="format-racket-value">
+	  <xsl:with-param name="type">symbol</xsl:with-param>
+	  <xsl:with-param name="value" select="$type"/>
 	</xsl:call-template>
       </xsl:with-param>
     </xsl:call-template>
@@ -361,7 +372,7 @@
 	</xsl:variable>
 	<xsl:call-template name="racket.cons">
 	  <xsl:with-param name="car">
-	    <xsl:call-template name="make-bitmap-thunk">
+	    <xsl:call-template name="make-meta-image">
 	      <xsl:with-param name="dirname">
 		<xsl:call-template name="construct-card-image-dirname">
 		  <xsl:with-param name="scale" select="$scale"/>
@@ -372,17 +383,13 @@
 		  <xsl:with-param name="basename" select="$basename"/>
 		</xsl:call-template>
 	      </xsl:with-param>
-	      <xsl:with-param name="type">
-		<xsl:call-template name="format-racket-value">
-		  <xsl:with-param name="value" select="$card.image.type"/>
-		  <xsl:with-param name="type">symbol</xsl:with-param>
-		</xsl:call-template>
-	      </xsl:with-param>
+	      <xsl:with-param name="type" select="$card.image.type"/>
 	    </xsl:call-template>
 	  </xsl:with-param>
 	  <xsl:with-param name="cdr">
 	    <xsl:call-template name="make-bitmap-foreach-scale-rec">
-	      <xsl:with-param name="scales" select="substring-after($scales, ' ')"/>
+	      <xsl:with-param name="scales" 
+			      select="substring-after($scales, $spc)"/>
 	      <xsl:with-param name="basename" select="$basename"/>
 	    </xsl:call-template>
 	  </xsl:with-param>
