@@ -1,6 +1,7 @@
 #lang racket
 
 (require
+ racket/gui/base
  games/cards
  neille/model
  neille/utils/syntax
@@ -14,31 +15,38 @@
 (define (q card field value)
   (eq? (send+ card field) value))
 
-(define (hero? c) (q c 'squadrole 'Hero))
-(define (unit? c) (q c 'squadrole 'Unit))
-(define (artifact? c) (q c 'squadrole 'Artifact))
-(define (spell? c) (q c 'squadrole 'Spell))
-(define (infantry? c) (q c 'type 'Infantry))
-(define (hero*? c) (q c 'type 'Hero))
-(define (beast? c) (q c 'type 'Beast))
-(define (barrier? c) (q c 'type 'Barrier))
-(define (archer? c) (q c 'type 'Archer))
-(define (cavalry? c) (q c 'type 'Cavalry))
-(define (artifact*? c) (q c 'type 'Artifact))
-(define (spell*? c) (q c 'type 'Spell))
-(define (neutral? c) (q c 'faction 'Neutral))
-(define (demon? c) (q c 'faction 'Demon))
-(define (human? c) (q c 'faction 'Human))
-(define (elf? c) (q c 'faction 'Elf))
-(define (orc? c) (q c 'faction 'Orc))
-(define (undead? c) (q c 'faction 'Undead))
-(define (dead? c) (q c 'health 0))
-(define (ready? c) (q c 'ready 0))
+(define (hero?      c) (q c 'squadrole 'Hero))
+(define (unit?      c) (q c 'squadrole 'Unit))
+(define (artifact?  c) (q c 'squadrole 'Artifact))
+(define (spell?     c) (q c 'squadrole 'Spell))
+(define (infantry?  c) (q c 'type      'Infantry))
+(define (hero*?     c) (q c 'type      'Hero))
+(define (beast?     c) (q c 'type      'Beast))
+(define (barrier?   c) (q c 'type      'Barrier))
+(define (archer?    c) (q c 'type      'Archer))
+(define (cavalry?   c) (q c 'type      'Cavalry))
+(define (artifact*? c) (q c 'type      'Artifact))
+(define (spell*?    c) (q c 'type      'Spell))
+(define (neutral?   c) (q c 'faction   'Neutral))
+(define (demon?     c) (q c 'faction   'Demon))
+(define (human?     c) (q c 'faction   'Human))
+(define (elf?       c) (q c 'faction   'Elf))
+(define (orc?       c) (q c 'faction   'Orc))
+(define (undead?    c) (q c 'faction   'Undead))
+(define (dead?      c) (q c 'health    0))
+(define (ready?     c) (q c 'ready     0))
 
 (define card-view-selector car)
 (define card-detail-view-selector cadr)
 
-(define (get-card-scale-thunks card)
+(define view-maker-delegate 
+  'make-view)
+(define detail-view-maker-delegate 
+  'make-detail-view)
+(define clone-maker-delegate
+  'make-clone)
+
+(define (get-card-meta-images card)
   (ws-card-graphic-scales 
    (send card get-image)))
 
@@ -77,23 +85,22 @@
      new-card 'add-delegate detail-view-maker-delegate
      (send+ stem detail-view-maker-delegate))
     (send+ 
-     new-card 'add-delegate clone-maker
-     (send+ stem clone-maker))
+     new-card 'add-delegate clone-maker-delegate
+     (send+ stem clone-maker-delegate))
     new-card))
 
-(define cards 
-  (map 
-   (lambda (ws-card)
-     (define card (new card% (ws-card ws-card)))
-     (send+ 
-      card 'add-delegate view-maker-delegate
-      (make-card-view-maker 'view card-view-selector))
-     (send+ 
-      card 'add-delegate detail-view-maker-delegate
-      (make-card-view-maker 'detail-view card-detail-view-selector))
-     (send+ 
-      card 'add-delegate clone-maker
-      (make-card-cloner card))
-     ((send+ card 'make-view) card)
-     card)
-   ws-cards))
+(define (prepare-card ws-card)
+  (define card (new card% (ws-card ws-card)))
+  (send+ 
+   card 'add-delegate view-maker-delegate
+   (make-card-view-maker 'view card-view-selector))
+  (send+ 
+   card 'add-delegate detail-view-maker-delegate
+   (make-card-view-maker 'detail-view card-detail-view-selector))
+  (send+ 
+   card 'add-delegate clone-maker-delegate
+   (make-card-cloner card))
+  ((send+ card 'make-view) card)
+  card)
+
+(define cards (map prepare-card ws-cards))
