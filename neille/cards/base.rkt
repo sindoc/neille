@@ -10,41 +10,41 @@
 (provide 
  (all-from-out neille/cards/ws-cards)
  (all-defined-out)
- (except-out q))
+ (except-out query))
 
-(define (q card field value)
+(define (query card field value)
   (eq? (send+ card field) value))
 
-(define (hero?      c) (q c 'squadrole 'Hero))
-(define (unit?      c) (q c 'squadrole 'Unit))
-(define (artifact?  c) (q c 'squadrole 'Artifact))
-(define (spell?     c) (q c 'squadrole 'Spell))
-(define (infantry?  c) (q c 'type      'Infantry))
-(define (hero*?     c) (q c 'type      'Hero))
-(define (beast?     c) (q c 'type      'Beast))
-(define (barrier?   c) (q c 'type      'Barrier))
-(define (archer?    c) (q c 'type      'Archer))
-(define (cavalry?   c) (q c 'type      'Cavalry))
-(define (artifact*? c) (q c 'type      'Artifact))
-(define (spell*?    c) (q c 'type      'Spell))
-(define (neutral?   c) (q c 'faction   'Neutral))
-(define (demon?     c) (q c 'faction   'Demon))
-(define (human?     c) (q c 'faction   'Human))
-(define (elf?       c) (q c 'faction   'Elf))
-(define (orc?       c) (q c 'faction   'Orc))
-(define (undead?    c) (q c 'faction   'Undead))
-(define (dead?      c) (q c 'health    0))
-(define (ready?     c) (q c 'ready     0))
+(define (hero?      card) (query card 'squadrole 'Hero))
+(define (unit?      card) (query card 'squadrole 'Unit))
+(define (artifact?  card) (query card 'squadrole 'Artifact))
+(define (spell?     card) (query card 'squadrole 'Spell))
+(define (neutral?   card) (query card 'faction   'Neutral))
+(define (demon?     card) (query card 'faction   'Demon))
+(define (human?     card) (query card 'faction   'Human))
+(define (elf?       card) (query card 'faction   'Elf))
+(define (orc?       card) (query card 'faction   'Orc))
+(define (undead?    card) (query card 'faction   'Undead))
+(define (infantry?  card) (query card 'type      'Infantry))
+(define (hero*?     card) (query card 'type      'Hero))
+(define (beast?     card) (query card 'type      'Beast))
+(define (barrier?   card) (query card 'type      'Barrier))
+(define (archer?    card) (query card 'type      'Archer))
+(define (cavalry?   card) (query card 'type      'Cavalry))
+(define (artifact*? card) (query card 'type      'Artifact))
+(define (spell*?    card) (query card 'type      'Spell))
+(define (dead?      card) (query card 'health    0))
+(define (ready?     card) (query card 'ready     0))
 
 (define card-view-selector car)
 (define card-detail-view-selector cadr)
 
-(define view-maker-delegate 
-  'make-view)
-(define detail-view-maker-delegate 
-  'make-detail-view)
-(define clone-maker-delegate
-  'make-clone)
+(define clone-maker-delegate 'make-clone)
+(define view-maker-delegate 'make-view)
+(define detail-view-maker-delegate 'make-detail-view)
+
+(define view-delegate 'view)
+(define detail-view-delegate 'detail-view)
 
 (define (get-card-meta-images card)
   (ws-card-graphic-scales 
@@ -63,6 +63,7 @@
   (define meta-image 
     (scale-selector 
      (get-card-meta-images card)))
+  
   (make-object bitmap%
     (collection-file-path
      (meta-image-filename meta-image)
@@ -93,10 +94,10 @@
   (define card (new card% (ws-card ws-card)))
   (send+ 
    card 'add-delegate view-maker-delegate
-   (make-card-view-maker 'view card-view-selector))
+   (make-card-view-maker view-delegate card-view-selector))
   (send+ 
    card 'add-delegate detail-view-maker-delegate
-   (make-card-view-maker 'detail-view card-detail-view-selector))
+   (make-card-view-maker detail-view-delegate card-detail-view-selector))
   (send+ 
    card 'add-delegate clone-maker-delegate
    (make-card-cloner card))
