@@ -12,8 +12,7 @@
   <xsl:param name="racket.bitmap.class.name">bitmap%</xsl:param>
   <xsl:param name="racket.require.gui">racket/gui/base</xsl:param>
   <xsl:param name="racket.require.games.cards">games/cards</xsl:param>
-  <xsl:param name="racket.default.struct.options">#:transparent 
-  #:mutable</xsl:param>
+  <xsl:param name="racket.default.struct.options">#:prefab</xsl:param>
   <xsl:param name="racket.games.cards.make-background-region-"
 	     select="'make-background-region'"/>
 
