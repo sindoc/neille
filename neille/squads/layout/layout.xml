@@ -14,6 +14,7 @@
     <param name="previous-cards"/>
     <param name="next-cards"/>
     <param name="trash"/>
+    <param name="save-squad"/>
   </config>
 
   <row height="0.15">
@@ -72,7 +73,7 @@
   <row height="0.2"/>
 
   <row height="0.15">
-    <col width="3.75"/>
+    <col width="3"/>
 
     <col id="previous-cards"
 	 model="$previous-cards"
@@ -88,6 +89,15 @@
 	 view="view%"
 	 label="Next &gt;"
 	 width="0.8"
+	 constructor="make-button-region"/>
+
+    <col width="0.5"/>
+
+    <col id="save-squad" 
+	 model="$save-squad"
+	 view="view%"
+	 label="Save Current Squad"
+	 width="1.2"
 	 constructor="make-button-region"/>
   </row>
 

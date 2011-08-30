@@ -3,6 +3,7 @@
 (require
  games/cards
  neille/utils/syntax
+ neille/utils/serialize
  neille/cards/ws-cards
  (prefix-in stk: neille/utils/stack)
  (prefix-in dls: neille/utils/double-linked-list))
@@ -107,43 +108,93 @@
       (send this notify))))
 
 (define player%
-  (class observable%
-    (init name)
+  (class* observable% (externalizable<%>)
+    
+    (init (name null))
+    
     (super-new)
+    
     (define name- name)
+    
     (define initial-morale- 20)
+    
     (define morale- initial-morale-)
-    (setup-dispatcher dispatcher- query add! update! remove!)
+    
+    (setup-dispatcher 
+     dispatcher- query add! update! remove!)
+    
     (define/public (get-morale) morale-)
+    
     (define/public (get-initial-morale) initial-morale-)
+    
     (define/public (set-morale new-morale)
       (set! morale- new-morale)
       (send this notify)
       void)
+    
     (define/public (get-name) name-)
+    
     (define/public (set-name new-name)
       (set! name- new-name)
       (send this notify)
-      void)))
-  
+      void)
+    
+    (define/public (externalize)
+      
+      (define squads 
+        (map 
+         (lambda (squad) 
+           (send squad externalize)) 
+         (send+ this 'squads)))
+      
+      (make-ws-player name- squads))
+    
+    (define/public (internalize ws-player)
+      (new 
+       player%
+       (name (ws-player-name ws-player))))))
+
 (define squad%
-  (class cardlist%
+  (class* cardlist% (externalizable<%>)
+    
     (init hero squad)
+    
     (define squad- squad)
+    
     (define hero- hero)
+    
     (super-new (cards squad-))
+    
     (define (include-hero c)
       (eq? hero- c))
+    
     (define (exclude-hero c)
       (not (include-hero c)))
+    
     (define/public (get-units)
       (filter exclude-hero (send this to-list)))
-    (define/public (get-hero) hero-)))
+    
+    (define/public (get-hero) hero-)
+    
+    (define/public (externalize)
+      (make-ws-squad
+       (send hero- externalize)
+       (map serialize- (get-units))))
+    
+    (define/public (internalize ws-squad)
+      (new
+       squad%
+       (hero (ws-squad-hero ws-squad))
+       (units (ws-squad-units ws-squad))))))
 
 (define card%
-  (class observable%
+  (class* observable% (externalizable<%>)
     (init ws-card)
     (super-new)
     (define ws-card- ws-card)
     (setup-dispatcher dispatcher- query add! update! remove!)
-    (setup-card-fields ws-card- query add! update!)))
+    (setup-card-fields ws-card- query add! update!)
+    (define/public (externalize)
+      ws-card-)
+    (define/public (internalize ws-card)
+      (new card% (ws-card ws-card)))))

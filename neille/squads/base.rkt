@@ -3,11 +3,13 @@
 (require
  racket/gui/base
  games/cards
- neille/utils/syntax
+ neille/base
  neille/model
- neille/squads/layout/base
  neille/cards/base
- neille/utils/base)
+ neille/squads/layout/base
+ neille/utils/base
+ neille/utils/storage
+ neille/utils/syntax)
 
 (provide (all-defined-out))
 
@@ -203,16 +205,42 @@
      (update-detail-view 
       (send card-view get-value)))))
 
-(define (setup squad)
+(define (setup-save-button player)
+  (define save-button
+    (send save-squad-view get-region))
+  
+  (set-region-callback!
+   save-button
+   (lambda ()
+     
+     (define hero (send hero-view get-model))
+     
+     (define squad-list 
+       (cons hero (send units to-list)))
+     
+     (define squad 
+       (new squad% (hero hero) (squad squad-list)))
+     
+     (send+ 
+      player 'update-delegate 
+      'squads (list squad))
+     
+     (marshal player)
+     
+     void)))
+
+(define (setup player squad)
   (when (is-a? squad squad%)
     (setup-existing-squad squad))
   (setup-cards)
   (setup-card-browser)
+  (setup-card-click-action)
   (setup-squad-container)
   (setup-trash)
-  (setup-card-click-action)
+  (setup-save-button player)
   void)
 
-(setup null)
-;(setup (car squads))
-(send table- show #t)
+(define player human)
+;(setup player null)
+(setup player (car squads))
+;(send table- show #t)

@@ -15,5 +15,6 @@
 (define meta-units null)
 (define previous-cards null)
 (define next-cards null)
+(define save-squad null)
 
 (define (on-click) void)
