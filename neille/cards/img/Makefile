@@ -1,5 +1,8 @@
-BASH_BASE=../../utils/bash
+BASE=../..
+UTILS=$(BASE)/utils
+BASH_BASE=$(UTILS)/bash
 GEN=$(BASH_BASE)/neille-gen-card-graphics
+
 IN_DIR=jpeg-orig
 IN_SUFFIX=jpg
 OUT_GEOMETRIES="108x150"

@@ -1,4 +1,6 @@
-BASH_BASE=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))../bash
+BASE=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))../..
+UTILS=$(BASE)/utils
+BASH_BASE=$(UTILS)/bash
 GO_MAKE_SUBDIRS=$(BASH_BASE)/neille-go-make-subdirs
 RM_AUX_FILES=$(BASH_BASE)/neille-rm-aux-files
 
