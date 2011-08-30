@@ -1,31 +1,18 @@
 #lang racket
 
 (require
- racket/gui/base
  games/cards
  neille/base
  neille/model
  neille/cards/base
- neille/squads/layout/base
  neille/utils/base
  neille/utils/storage
- neille/utils/syntax)
+ neille/utils/syntax
+ neille/squads/static
+ neille/squads/layout/base
+ racket/gui/base)
 
 (provide (all-defined-out))
-
-(define (make-squad* m)
-  (define (mk-card stem)
-    (define clone ((send+ stem 'make-clone)))
-    ((send+ clone 'make-view) clone)
-    clone)
-  (define squad
-    (cons 
-     (mk-card (car (filter hero? cards)))
-     (map (lambda (c) (mk-card c)) (take cards (* m 6)))))
-  (list (new squad% (hero (car squad)) (squad squad))))
-
-(define squads (make-squad* 1))
-(define -squads (make-squad* 2))
 
 (define cards- null)
 
@@ -240,7 +227,7 @@
   (setup-save-button player)
   void)
 
-(define player human)
+(setup human (car squads))
+
 ;(setup player null)
-(setup player (car squads))
 ;(send table- show #t)

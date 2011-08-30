@@ -6,7 +6,7 @@
  neille/battle/layout/base
  neille/cards/base
  neille/utils/syntax
- neille/squads/base
+ neille/squads/static
  racket/mpair
  (prefix-in ring: a-d/ring))
 
@@ -25,6 +25,7 @@
   (define staging (send+ player 'staging))
   (send staging add-card (send deck pop)))
 
-(send table- show #t)
 (init-battle)
 (battle-loop (cadr players))
+
+(send table- show #t)

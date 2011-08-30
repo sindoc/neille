@@ -197,31 +197,41 @@
 (define squad%
   (class* cardlist% (externalizable<%>)
     
-    (init hero squad)
-    
-    (define squad- squad)
+    (init hero units)
+        
+    (super-new 
+     (cards
+      (cons
+       hero
+       units)))
     
     (define hero- hero)
+
+    (define 
+      (include-hero card)
+      (eq? hero- card))
     
-    (super-new (cards squad-))
+    (define 
+      (exclude-hero card)
+      (not (include-hero card)))
     
-    (define (include-hero c)
-      (eq? hero- c))
+    (define/public 
+      (get-units)
+      (filter 
+       exclude-hero 
+       (send this to-list)))
     
-    (define (exclude-hero c)
-      (not (include-hero c)))
+    (define/public 
+      (get-hero) hero-)
     
-    (define/public (get-units)
-      (filter exclude-hero (send this to-list)))
-    
-    (define/public (get-hero) hero-)
-    
-    (define/public (externalize)
+    (define/public 
+      (externalize)
       (make-ws-squad
        (send hero- externalize)
        (map serialize- (get-units))))
     
-    (define/public (internalize ws-squad)
+    (define/public 
+      (internalize ws-squad)
       (new
        squad%
        (hero (ws-squad-hero ws-squad))
@@ -231,11 +241,18 @@
 (define card%
   (class* observable% (externalizable<%>)
     (init ws-card)
+    
     (super-new)
+    
     (define ws-card- ws-card)
+    
     (setup-dispatcher dispatcher- query add! update! remove!)
+    
     (setup-card-fields ws-card- query add! update!)
+    
     (define/public (externalize)
       ws-card-)
+    
     (define/public (internalize ws-card)
       (new card% (ws-card ws-card)))))
+
