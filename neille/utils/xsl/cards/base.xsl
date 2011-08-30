@@ -64,7 +64,8 @@
 	<xsl:call-template name="racket.cons">
 	  <xsl:with-param name="car">
 	    <xsl:call-template name="racket.apply">
-	      <xsl:with-param name="proc" select="$card.struct.constructor.id"/>
+	      <xsl:with-param name="proc" 
+			      select="$card.struct.constructor.id"/>
 	      <xsl:with-param name="args" select="$card-struct-fields"/>
 	    </xsl:call-template>
 	  </xsl:with-param>
