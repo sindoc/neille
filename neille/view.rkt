@@ -10,7 +10,9 @@
  
  neille/utils/base
  
- neille/utils/syntax)
+ neille/utils/syntax
+ 
+ neille/cards/fallback)
 
 
 
@@ -116,14 +118,9 @@
       
        (if (send deck- empty?)
           
-           null 
+           (make-fallback-card-view)
           
-           (send deck- top))))
-    
-    
-    (define (get-visible-card-view)
-      
-      (send+ visible-card- 'view))
+           (send+ (send deck- top) 'view))))
     
     
     (update-view)
@@ -131,17 +128,15 @@
     
     (define/override (update)
       
-      (update-view)
+      (send root- remove-card visible-card-)
       
-      (send root- remove-card (get-visible-card-view))
+      (update-view)
       
       (send 
        
        root- add-cards-to-region 
        
-       (list 
-        
-        (get-visible-card-view)) 
+       (list visible-card-)
        
        region-))))
 
