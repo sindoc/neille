@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function find_source_files
+function find-source-files
 {
   find .                \
        -name '*.bash'   \
@@ -13,37 +13,37 @@ function find_source_files
 }
 
 
-function print_content_of_source_files
+function print-content-of-source-files
 {
-  find_source_files | xargs cat
+  find-source-files | xargs cat
 }
 
 
-function remove_newline_chars_from_source_files
+function print-newline-char-free-content-of-source-files 
 {
-  find_source_files | tr '\n' ' '
+  find-source-files | tr '\n' ' '
 }
 
 
-function count_chars_in_source_files
+function count-chars-in-source-files
 {
-  remove_newline_chars_from_source_files | wc -c
+  print-newline-char-free-content-of-source-files | wc -c
 }
 
 
-function count_source_files
+function count-source-files
 {
-  find_source_files | wc -l
+  find-source-files | wc -l
 }
 
 
 echo "Number of Source Files: "
 
-count_source_files
+count-source-files
 
 
 echo "Number of Characters in Source Files: "
 
-count_chars_in_source_files
+count-chars-in-source-files
 
 
