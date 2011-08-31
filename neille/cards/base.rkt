@@ -12,15 +12,24 @@
  
  neille/utils/syntax
  
- neille/cards/ws-cards)
+ neille/cards/ws-cards
+ 
+ neille/cards/fallback)
 
 
 
 (provide 
  
- (all-from-out neille/cards/ws-cards)
+ 
+ (all-from-out 
+  
+  neille/cards/ws-cards
+  
+  neille/cards/fallback)
+ 
  
  (all-defined-out)
+ 
  
  (except-out query))
 
@@ -224,9 +233,6 @@
 
 
 (define cards (map prepare-card ws-cards))
-
-
-
 
 
 
