@@ -5,6 +5,7 @@ GO_MAKE_SUBDIRS=$(BASH_BASE)/neille-go-make-subdirs
 RM_AUX_FILES=$(BASH_BASE)/neille-rm-aux-files
 
 .PHONY: clean
+
 all: build
 
 clean:

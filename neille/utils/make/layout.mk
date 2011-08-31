@@ -1,3 +1,4 @@
+HERE=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 LAYOUT_SRC=layout.xml
 LAYOUT_OUT=base.rkt
 XSL_BASE=$(BASE)/utils/xsl
@@ -6,7 +7,9 @@ LAYOUT_XSL=$(LAYOUT_XSL_BASE)/base.xsl
 LAYOUT_XSL_CUSTOM=$(LAYOUT_XSL_BASE)/custom.xsl
 OUT=$(LAYOUT_OUT)
 
-all: $(LAYOUT_OUT)
+include $(HERE)/vcignore.mk
+
+all: $(OUT) $(VC_IGNORE_FILE)
 .PHONY: clean
 
 $(LAYOUT_XSL_CUSTOM):
@@ -19,7 +22,3 @@ clean:
 	touch $(OUT)
 	rm $(OUT)
 
-gen-gitignore:
-	for out in $(OUT); do \
-	  echo $$out; \
-	done >.gitignore
