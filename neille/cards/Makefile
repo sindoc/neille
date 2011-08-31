@@ -6,8 +6,10 @@ CARDS_XSL_BASE=$(XSL_BASE)/cards
 CARDS_XSL=$(CARDS_XSL_BASE)/base.xsl
 CARD_FIELDS_XSL=$(CARDS_XSL_BASE)/generate-card-fields.xsl
 OUT=$(CARDS) $(CARD_FIELDS)
+VC_IGNORE_LIST=schemas.xml
 
-all: $(CARDS) $(CARD_FIELDS)
+
+all: $(CARDS) $(CARD_FIELDS) .gitignore
 .PHONY: clean
 
 $(CARDS_XSL):
@@ -23,7 +25,11 @@ clean:
 	touch $(OUT)
 	rm $(OUT)
 
-gen-gitignore:
+.gitignore:
 	for out in $(OUT); do \
 	  echo $$out; \
-	done >.gitignore
+	done >$@
+
+	for ign in $(VC_IGNORE_LIST); do \
+	  echo $$ign; \
+	done >>$@
