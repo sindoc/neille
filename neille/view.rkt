@@ -105,22 +105,45 @@
     (setup-view root- region- deck- children-)
     
     
-    (define visible-card 
+    (define visible-card- null)
+    
+    
+    (define (update-view)
       
-      (if (send deck- empty?) null (send deck- top)))
+      (set!
+       
+       visible-card-
+      
+       (if (send deck- empty?)
+          
+           null 
+          
+           (send deck- top))))
+    
+    
+    (define (get-visible-card-view)
+      
+      (send+ visible-card- 'view))
+    
+    
+    (update-view)
     
     
     (define/override (update)
       
-      (set! visible-card (send deck- top))
+      (update-view)
       
-      (send root- remove-card (send+ visible-card 'view))
+      (send root- remove-card (get-visible-card-view))
       
       (send 
        
        root- add-cards-to-region 
        
-       (list (send+ visible-card 'view)) region-))))
+       (list 
+        
+        (get-visible-card-view)) 
+       
+       region-))))
 
 
 
