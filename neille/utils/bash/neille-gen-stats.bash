@@ -36,14 +36,21 @@ function count-source-files
   find-source-files | wc -l
 }
 
+function count-lines-in-source-files
+{
+  print-content-of-source-files | wc -l
+}
 
 echo "Number of Source Files: "
 
 count-source-files
 
 
-echo "Number of Characters in Source Files: "
+echo "Number of Characters in Code: "
 
 count-chars-in-source-files
 
 
+echo "Number of Lines of Code (whitespace-included): "
+
+count-lines-in-source-files
