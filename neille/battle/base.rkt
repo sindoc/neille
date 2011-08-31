@@ -52,23 +52,19 @@
 
 
 
-(define (take-card-from-deck-to-staging player)
-  
-  (define deck     (get-deck player))
-  
-  (define staging  (get-staging player))
-  
-  (send   staging  add-card (send deck pop))
-  
-  void)
-
-
-
 (define (select-next-player player-ring)
   
   (ring:shift-forward! player-ring)
   
   (ring:peek player-ring))
+
+
+
+(define (take-card-from-deck-to-staging deck staging)
+  
+  (send   staging  add-card (send deck pop))
+  
+  void)
 
 
 
@@ -102,9 +98,7 @@
 
 
 
-(define (adapt-readiness-of-staging-cards player)
-  
-  (define staging (get-staging player))
+(define (adapt-readiness-of-staging-cards staging)
   
   (for-each-card 
    
@@ -118,19 +112,7 @@
 
 
 
-(define (deploy-card-to-inplay player card)
-  
-  (define inplay (get-inplay player))
-  
-  (send inplay add-card card)
-  
-  void)
-
-
-
-(define (deploy-cards-from-staging player)
-  
-  (define staging (get-staging player))
+(define (deploy-cards-from-staging staging inplay)
   
   (for-each-card
    
@@ -140,7 +122,7 @@
      
      (when (<= (get-card-readiness card) 0)
        
-       (deploy-card-to-inplay player card)))))
+       (send inplay add-card card)))))
 
 
 
@@ -154,6 +136,14 @@
 
 (define (battle-loop player)
   
+  
+  (define deck     (get-deck      player))
+  
+  (define staging  (get-staging   player))
+  
+  (define inplay   (get-inplay    player))
+  
+  
   (cond
     
     ((game-finished? player)
@@ -162,11 +152,11 @@
     
     (else
      
-     (take-card-from-deck-to-staging   player)
+     (take-card-from-deck-to-staging   deck staging)
      
-     (adapt-readiness-of-staging-cards player)
+     (adapt-readiness-of-staging-cards staging)
      
-     (deploy-cards-from-staging        player)
+     (deploy-cards-from-staging        staging inplay)
      
      (sleep 1)
      
