@@ -229,7 +229,7 @@
         
         (take lst pos)
         
-        (cons val (drop lst pos-)))))
+        (cons val (drop lst pos)))))
     
     
     (define/public (add-card card . pos)
