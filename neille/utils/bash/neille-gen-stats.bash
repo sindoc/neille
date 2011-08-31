@@ -21,7 +21,7 @@ function print-content-of-source-files
 
 function print-newline-char-free-content-of-source-files 
 {
-  find-source-files | tr '\n' ' '
+  print-content-of-source-files | tr '\n' ' '
 }
 
 
