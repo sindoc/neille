@@ -14,8 +14,6 @@
  
  neille/squads/static
  
- racket/mpair
- 
  (prefix-in ring: a-d/ring))
 
 
