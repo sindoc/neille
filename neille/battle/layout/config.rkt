@@ -1,15 +1,52 @@
 #lang racket
 
+
 ;; This module must export bindings with the same name
 ;; as the parameters defined in layout.xml
 
+
 (require 
+ 
+ neille/base
+ 
  neille/view
- neille/base)
+ 
+ neille/battle/model)
 
-(provide human robot morale-callback)
+ 
 
+(provide
+ 
+ human
+ 
+ robot
+ 
+ (all-defined-out)
+ 
+ (all-from-out
+  
+  neille/battle/model))
+
+
+  
 (define morale-callback 
+  
   (send 
-   (new morale-view% (model human)) 
+   
+   (new morale-view% (model human))
+   
    get-paint-callback))
+
+
+
+
+
+
+
+
+
+
+
+
+
+

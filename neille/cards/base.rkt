@@ -85,23 +85,19 @@
 
 (define card-view-selector car)
 
-
 (define card-detail-view-selector cadr)
 
 
 
 (define clone-maker-delegate 'make-clone)
 
-
 (define view-maker-delegate 'make-view)
-
 
 (define detail-view-maker-delegate 'make-detail-view)
 
 
 
 (define view-delegate 'view)
-
 
 (define detail-view-delegate 'detail-view)
 
@@ -206,24 +202,38 @@
   
   (send+ 
    
-   card 'add-delegate view-maker-delegate
+   card 'add-delegate 
    
-   (make-card-view-maker view-delegate card-view-selector))
+   view-maker-delegate
+   
+   (make-card-view-maker 
+    
+    view-delegate 
+    
+    card-view-selector))
   
   
   (send+ 
    
-   card 'add-delegate detail-view-maker-delegate
+   card 'add-delegate 
    
-   (make-card-view-maker detail-view-delegate card-detail-view-selector))
+   detail-view-maker-delegate
+   
+   (make-card-view-maker 
+    
+    detail-view-delegate 
+    
+    card-detail-view-selector))
   
   
   (send+ 
    
-   card 'add-delegate clone-maker-delegate
+   card 'add-delegate 
+   
+   clone-maker-delegate
    
    (make-card-cloner card))
-  
+   
   
   ((send+ card 'make-view) card)
   
