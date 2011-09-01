@@ -144,8 +144,10 @@
   <xsl:template match="l:layout">
     <xsl:apply-templates/>
     <xsl:call-template name="margin"/>
-    <xsl:apply-templates mode="define-models"/>
-    <xsl:call-template name="margin"/>
+    <xsl:if test="$generate.models != ''">
+      <xsl:apply-templates mode="define-models"/>
+      <xsl:call-template name="margin"/>
+    </xsl:if>
     <xsl:apply-templates mode="define-views"/>
     <xsl:call-template name="margin"/>
     <xsl:call-template name="init"/>

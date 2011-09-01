@@ -165,8 +165,6 @@
    
    (lambda ()
      
-     (show page-number)
-     
      (unless (<= page-number 1)
        
        (send table- remove-cards (map get-card-view page-content))
@@ -399,4 +397,4 @@
 
 ;(setup player null)
 
-;(send table- show #t)
+(send table- show #t)

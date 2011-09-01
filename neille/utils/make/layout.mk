@@ -16,7 +16,9 @@ $(LAYOUT_XSL_CUSTOM):
 $(LAYOUT_XSL):
 
 $(LAYOUT_OUT): $(LAYOUT_XSL) $(LAYOUT_SRC)
-	xsltproc -o $@ $^
+	xsltproc \
+	$(LAYOUT_XSL_PARAMS) \
+	-o $@ $^
 
 clean:
 	touch $(OUT)

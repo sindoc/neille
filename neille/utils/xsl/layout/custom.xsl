@@ -21,6 +21,7 @@
   <xsl:param name="region.default.constructor">make-region</xsl:param>
   <xsl:param name="region.default.callback" select="$racket.false.value"/>
   <xsl:param name="init.proc.id">init-layout</xsl:param>
+  <xsl:param name="generate.models"></xsl:param>
 
   <xsl:template name="construct-model-id">
     <xsl:param name="stem" select="@id"/>
@@ -141,8 +142,10 @@
     <xsl:call-template name="racket.apply">
       <xsl:with-param name="proc" select="$init.proc.id"/>
     </xsl:call-template>
+<!--
     <xsl:call-template name="newline"/>
     <xsl:call-template name="show-table"/>
+-->
   </xsl:template>
 
 </xsl:stylesheet>
