@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function find-source-files
+function neille-sc-find
 {
   find .                \
        -name '*.bash'   \
@@ -13,44 +13,79 @@ function find-source-files
 }
 
 
-function print-content-of-source-files
+
+function neille-sc-print
 {
-  find-source-files | xargs cat
+  neille-sc-find | xargs cat
 }
 
 
-function print-newline-char-free-content-of-source-files 
+
+function neille-sc-rm-newline-chars
 {
-  print-content-of-source-files | tr '\n' ' '
+  neille-print-sc | tr '\n' ' '
 }
 
 
-function count-chars-in-source-files
+
+function neille-sc-rm-leading-whtspc
 {
-  print-newline-char-free-content-of-source-files | wc -c
+  neille-sc-print | sed 's/^[ \t]*//'
 }
 
 
-function count-source-files
+
+function neille-sc-rm-whtspc-arnd-line
 {
-  find-source-files | wc -l
+  neille-sc-rm-leading-whtspc | sed 's/[ \t]*$//'
 }
 
-function count-lines-in-source-files
+
+
+function neille-sc-rm-empty-lines
 {
-  print-content-of-source-files | wc -l
+  neille-sc-rm-peripheral-whtspc | '/^$/d'
 }
 
-echo "Number of Source Files: "
-
-count-source-files
 
 
-echo "Number of Characters in Code: "
+echo "---------------------------------"
+echo -n "Number of Source Files:"
+neille-sc-find | wc -l
+echo "================================="
+echo
+echo
+echo "---------------------------------"
+echo "Number of  Lines of Code        |"
+echo "---------------------------------"
+echo -n "Whitespace-included:"
 
-count-chars-in-source-files
+neille-sc-print | wc -l
+echo
+echo -n "Whitespace-excluded:"
+
+neille-sc-rm-whtspc-arnd-line | wc -l
+echo
+echo "================================="
+echo
+echo
+echo "---------------------------------"
+echo "Number of Characters in Code     |"
+echo "---------------------------------"
+echo -n "Whitespace-included:"
+
+neille-sc-print | wc -c
+echo
+echo -n "Whitespace-excluded:"
+
+neille-sc-rm-whtspc-arnd-line | wc -c
+echo
+echo "================================="
 
 
-echo "Number of Lines of Code (whitespace-included): "
 
-count-lines-in-source-files
+
+
+
+
+
