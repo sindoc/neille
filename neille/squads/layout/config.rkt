@@ -15,9 +15,9 @@
  (all-defined-out))
 
 
-(define units     (new cardlist%))
+(define units     (new cardlist-%))
 
-(define card-list (new cardlist%))
+(define card-list (new cardlist-%))
 
 
 (define dummy-card  (car cards))

@@ -301,6 +301,7 @@
     (make-region
      
      new-x
+     
      new-y
      
      (region-w trash-region)
