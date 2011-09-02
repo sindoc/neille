@@ -29,7 +29,7 @@
    subscribe 
    
    game-finished-event-id
-
+   
    (lambda (winner)
      
      (define dialog 
