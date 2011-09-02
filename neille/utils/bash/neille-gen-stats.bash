@@ -44,7 +44,7 @@ function neille-sc-rm-whtspc-arnd-line
 
 function neille-sc-rm-empty-lines
 {
-  neille-sc-rm-peripheral-whtspc | '/^$/d'
+  neille-sc-rm-whtspc-arnd-line | sed '/^$/d'
 }
 
 
@@ -58,13 +58,13 @@ echo
 echo "---------------------------------"
 echo "Number of  Lines of Code        |"
 echo "---------------------------------"
-echo -n "Whitespace-included:"
+echo -n "w/  empty lines:"
 
 neille-sc-print | wc -l
 echo
-echo -n "Whitespace-excluded:"
+echo -n "w/o empty lines:"
 
-neille-sc-rm-whtspc-arnd-line | wc -l
+neille-sc-rm-empty-lines | wc -l
 echo
 echo "================================="
 echo
@@ -72,13 +72,13 @@ echo
 echo "---------------------------------"
 echo "Number of Characters in Code     |"
 echo "---------------------------------"
-echo -n "Whitespace-included:"
+echo -n "w/  whitespace:"
 
 neille-sc-print | wc -c
 echo
-echo -n "Whitespace-excluded:"
+echo -n "w/o whitespace:"
 
-neille-sc-rm-whtspc-arnd-line | wc -c
+neille-sc-rm-empty-lines | wc -c
 echo
 echo "================================="
 
