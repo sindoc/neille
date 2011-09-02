@@ -14,23 +14,29 @@
 
 
 
-(define space (make-ability-space))
+(provide
+ 
+ ability-space)
 
 
 
-(define +/- "[+|-]")
+(define ability-space (make-ability-space))
 
-(define n  "[\\d]+")
+
+
+(define *+/-*     "[+|-]" )
+
+(define *amount*  "[\\d]+")
 
 
 
 (define-ability 
   
-  space
+  ability-space
   
   "Attack" 
   
-  (+/- n)
+  (*+/-* *amount*)
   
   (lambda vars
     
@@ -41,14 +47,246 @@
       (define direction (get-direction vars))
       
       (show "Amount: " amount " ; Direction: " direction "\n"))))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Heal"
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
       
+      void)))
 
 
-((send space dispatch-ability "Attack -2") 'player)
 
-((send space dispatch-ability "Attack") 'player)
+(define-ability
+  
+  ability-space
+  
+  "Pikeman"
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
 
-((send space dispatch-ability "Attack 4") 'player)
+
+
+(define-ability
+  
+  ability-space
+  
+  "Archery"
+  
+  ()
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Zap"
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Poison"
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Sabotage"
+  
+  ()
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Retaliate"
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Trap"
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Sap"
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Health"
+  
+  (*+/-* *amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Regenerate"
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Trample"
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Block"
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  ""
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
+
+
+
+(define-ability
+  
+  ability-space
+  
+  "Rush"
+  
+  (*amount*)
+  
+  (lambda vars
+    
+    (lambda (player)
+      
+      void)))
 
 
 

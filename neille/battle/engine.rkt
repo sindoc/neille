@@ -18,6 +18,8 @@
  
  neille/battle/events
  
+ neille/battle/abilities/base
+ 
  neille/utils/broadcast-feedback-channel)
 
 
@@ -137,7 +139,8 @@
      (deploy-cards-from-staging staging inplay)
      
      
-     ;(sleep 0.6)
+     (sleep 0.6)
+     
      
      (battle-loop 
       
@@ -168,6 +171,37 @@
 
 
 
+(define (load-card-abilities players)
+  
+  (for-each
+   
+   (lambda (player)
+     
+     (define squad (get-active-squad player))
+     
+     (for-each
+      
+      (lambda (card)
+     
+        (send+ 
+      
+         player 'update-delegate 'abilities
+      
+         (map
+       
+          (lambda (ability-descriptor)
+         
+            (send ability-space dispatch-ability ability-descriptor))
+       
+          (send card get-specials))))
+      
+      (send squad to-list)))
+   
+   players))
+        
+        
+
+
 (define (start-playing)
   
   (init-players 
@@ -175,7 +209,9 @@
    players 
  
    (deck graveyard reserve inplay staging opponent active-squad))
-
+  
+  (load-card-abilities players)
+  
   (load-decks-with-active-squads players)
 
   (battle-loop (cadr players)))
