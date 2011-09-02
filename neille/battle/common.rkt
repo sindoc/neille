@@ -4,7 +4,9 @@
 
 (require
  
- neille/utils/syntax)
+ neille/utils/syntax
+ 
+ (prefix-in ring: a-d/ring))
 
 
 
@@ -36,6 +38,43 @@
      (proc card)))
 
   void)
+
+
+
+(define (select-next-player player-ring)
+  
+  (ring:shift-forward! player-ring)
+  
+  (ring:peek player-ring))
+
+
+
+(define (get-opponent players player)
+  
+  (car
+    
+    (filter-not
+       
+     (lambda (player-)
+       
+       (eq? player player-))
+     
+     players)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

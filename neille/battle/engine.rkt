@@ -18,9 +18,7 @@
  
  neille/battle/events
  
- neille/utils/broadcast-feedback-channel
- 
- (prefix-in ring: a-d/ring))
+ neille/utils/broadcast-feedback-channel)
 
 
 
@@ -50,21 +48,6 @@
          
          message))))))
 
-
-
-(init-players 
- 
- players 
- 
- (deck graveyard reserve inplay staging active-squad))
-
-
-
-(define (select-next-player player-ring)
-  
-  (ring:shift-forward! player-ring)
-  
-  (ring:peek player-ring))
 
 
 
@@ -109,7 +92,7 @@
 
 
 
-(define (broadcast-end-of-game player)
+(define (broadcast-end-of-game player opponent)
   
   (send 
       
@@ -119,15 +102,7 @@
    
    game-finished-event-id 
       
-   (car
-    
-    (filter-not
-       
-     (lambda (player-)
-       
-       (eq? player player-))
-     
-     players))))
+   opponent))
 
   
   
@@ -141,12 +116,14 @@
   
   (define inplay   (get-inplay    player))
   
+  (define opponent (get-opponent  players player))
+  
   
   (cond
     
     ((send deck empty?)
      
-     (broadcast-end-of-game player))
+     (broadcast-end-of-game player opponent))
          
     (else
      
@@ -160,7 +137,7 @@
      (deploy-cards-from-staging staging inplay)
      
      
-     (sleep 0.6)
+     ;(sleep 0.6)
      
      (battle-loop 
       
@@ -170,7 +147,7 @@
 
 
 
-(define (load-decks-with-active-squads)
+(define (load-decks-with-active-squads players)
   
   (for-each
    
@@ -193,7 +170,13 @@
 
 (define (start-playing)
   
-  (load-decks-with-active-squads)
+  (init-players 
+ 
+   players 
+ 
+   (deck graveyard reserve inplay staging opponent active-squad))
+
+  (load-decks-with-active-squads players)
 
   (battle-loop (cadr players)))
 

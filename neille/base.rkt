@@ -41,7 +41,19 @@
 
 
 
-(define players (list human robot))
+(define players   (list robot human))
+
+(define-values
+  
+  (opponent -opponent) 
+  
+  (let ((split-point 1))
+    
+    (values
+     
+     (car (take players split-point))
+     
+     (car (drop players split-point)))))
 
 
 
