@@ -4,7 +4,9 @@
  
  games/cards
  
- neille/utils/syntax
+ neille/cards/syntax
+ 
+ neille/common/syntax
  
  neille/utils/serialize
  

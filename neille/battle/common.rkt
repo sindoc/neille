@@ -4,7 +4,7 @@
 
 (require
  
- neille/utils/syntax
+ neille/common/syntax
  
  (prefix-in ring: a-d/ring))
 

@@ -8,7 +8,7 @@
  
  neille/cards/base
  
- neille/utils/syntax
+ neille/common/syntax
  
  neille/squads/static
  

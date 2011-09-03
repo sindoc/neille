@@ -10,7 +10,7 @@
  
  neille/utils/base
  
- neille/utils/syntax
+ neille/common/syntax
  
  neille/cards/fallback)
 

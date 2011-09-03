@@ -5,7 +5,7 @@
  neille/common/model-classes
  neille/cards/base
  neille/squads/static
- neille/utils/syntax
+ neille/common/syntax
  neille/utils/serialize
  racket/fasl)
 

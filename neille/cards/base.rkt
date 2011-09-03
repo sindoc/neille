@@ -10,7 +10,7 @@
  
  neille/common/model-classes
  
- neille/utils/syntax
+ neille/common/syntax
  
  neille/cards/ws-cards
  

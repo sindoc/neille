@@ -14,7 +14,7 @@
  
  neille/utils/base
  
- neille/utils/syntax
+ neille/common/syntax
 
  neille/utils/storage
  

@@ -3,7 +3,7 @@
 (require
  neille/common/model-classes
  neille/cards/base
- neille/utils/syntax)
+ neille/common/syntax)
 
 (provide (all-defined-out))
 
