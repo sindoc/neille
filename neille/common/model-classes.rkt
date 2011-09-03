@@ -8,7 +8,7 @@
  
  neille/common/syntax
  
- neille/utils/serialize
+ neille/common/serialize
  
  neille/cards/ws-cards
  

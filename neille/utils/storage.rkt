@@ -6,7 +6,7 @@
  neille/cards/base
  neille/squads/static
  neille/common/syntax
- neille/utils/serialize
+ neille/common/serialize
  racket/fasl)
 
 (provide marshal unmarshal)
