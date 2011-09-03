@@ -40,13 +40,9 @@
 ;; -----------
 
 
-;(define-serializable-class
+(define-serializable-class
 
-(define
-  
   observable%
-  
-  (class
   
   object%
     
@@ -78,7 +74,7 @@
   
   (define/public (internalize)
     
-    this)))
+    this))
 
 
 
