@@ -1,4 +1,4 @@
 BASE=../..
-UTILS=$(BASE)/utils
-MAKE_BASE=$(UTILS)/make
+META=$(BASE)/meta
+MAKE_BASE=$(META)/make
 include $(MAKE_BASE)/common.mk

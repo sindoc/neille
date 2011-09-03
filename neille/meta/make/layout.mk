@@ -1,7 +1,8 @@
 HERE=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 LAYOUT_SRC=layout.xml
 LAYOUT_OUT=base.rkt
-XSL_BASE=$(BASE)/utils/xsl
+META=$(BASE)/meta
+XSL_BASE=$(META)/xsl
 LAYOUT_XSL_BASE=$(XSL_BASE)/layout
 LAYOUT_XSL=$(LAYOUT_XSL_BASE)/base.xsl
 LAYOUT_XSL_CUSTOM=$(LAYOUT_XSL_BASE)/custom.xsl

@@ -397,6 +397,6 @@
   void)
 
 
-;(setup-squad-selection-screen human)
+(setup-squad-selection-screen human)
 
 (send table- show #t)

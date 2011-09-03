@@ -141,7 +141,7 @@
      (deploy-cards-from-staging staging inplay)
      
      
-     (sleep 0.6)
+     ;(sleep 0.6)
      
      
      (battle-loop 

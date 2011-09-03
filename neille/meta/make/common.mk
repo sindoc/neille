@@ -1,6 +1,6 @@
 BASE=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))../..
-UTILS=$(BASE)/utils
-BASH_BASE=$(UTILS)/bash
+META=$(BASE)/meta
+BASH_BASE=$(META)/bash
 GO_MAKE_SUBDIRS=$(BASH_BASE)/neille-go-make-subdirs.bash
 RM_AUX_FILES=$(BASH_BASE)/neille-rm-aux-files.bash
 GEN_STATS=$(BASH_BASE)/neille-gen-stats.bash

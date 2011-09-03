@@ -1,8 +1,8 @@
 BASE=..
-UTILS=$(BASE)/utils
-MAKE_BASE=$(UTILS)/make
+META=$(BASE)/meta
+MAKE_BASE=$(META)/make
 VC_IGNORE=$(MAKE_BASE)/vcignore.mk
-XSL_BASE=$(UTILS)/xsl
+XSL_BASE=$(META)/xsl
 CARDS_SRC=cards.xml
 CARDS=ws-cards.rkt
 CARD_FIELDS=ws-card-fields.rkt
