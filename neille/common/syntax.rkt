@@ -85,15 +85,15 @@
      
      (with-syntax
          
-	 ((check-msg-type (generate-temporaries '(check-msg-type))))
+         ((check-msg-type (generate-temporaries '(check-msg-type))))
        
        #'(begin
            
            
-	   (define dispatcher null)
+	   (define dispatcher (make-hash))
            
            
-	   (define (check-msg-type source msg)
+	   (define/public (check-msg-type source msg)
              
 	     (unless (or (symbol? msg) (string? msg))
                
@@ -104,16 +104,16 @@
                 "(or/c symbol? string?)" msg)))
            
            
-	   (define (add msg delegate)
+	   (define/public (add msg delegate)
              
 	     (check-msg-type 'add-delegate msg)
              
 	     (hash-set! dispatcher msg delegate))
            
            
-	   (define (update msg delegate)
+	   (define/public (update msg delegate)
              
-	     (check-msg-type 'add-delegate msg)
+	     (check-msg-type 'update-delegate msg)
              
 	     (hash-update!
               
@@ -124,27 +124,12 @@
 	      (lambda () #f)))
     	   
            
-           (define (remove msg)
+           (define/public (remove msg)
              
 	     (check-msg-type 'remove-delegate msg)
              
 	     (hash-remove! dispatcher msg))
-           
-           
-	   (set!
-            
-	    dispatcher
-            
-	    (make-hash
-             
-	     (list 
-              
-	      (cons 'update-delegate update)
-              
-	      (cons 'add-delegate add)
-              
-	      (cons 'remove-delegate remove))))
-           
+                      
            
 	   (define/public (query msg)
              

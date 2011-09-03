@@ -185,9 +185,9 @@
       
       (lambda (card)
      
-        (send+ 
+        (send 
       
-         player 'update-delegate 'abilities
+         player update-delegate 'abilities
       
          (map
        
@@ -212,7 +212,7 @@
  
    (deck graveyard reserve inplay staging opponent active-squad))
   
-  (load-card-abilities players)
+  ;(load-card-abilities players)
   
   (load-decks-with-active-squads players)
 

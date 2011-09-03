@@ -32,7 +32,7 @@
   
   (send 
    
-   collection for-each
+   collection foreach
    
    (lambda (card)
      

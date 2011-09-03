@@ -1,5 +1,7 @@
 #lang racket
 
+
+
 (require
  
  games/cards
@@ -10,56 +12,80 @@
  
  neille/common/serialize
  
+ racket/serialize
+ 
  neille/cards/ws-cards
  
- (prefix-in stk: neille/utils/stack)
- 
- (prefix-in dls: neille/utils/double-linked-list))
+ (prefix-in stk: neille/utils/stack))
 
 
 
 (provide
  
- (all-defined-out))
+ card%
+ 
+ cardlist%
+ 
+ squad%
+ 
+ deck%
+ 
+ player%)
 
 
 
-(define observable%
+
+;; -----------
+;;  Observer
+;; -----------
+
+
+;(define-serializable-class
+
+(define
   
-  (class object%
+  observable%
+  
+  (class
+  
+  object%
     
-    (super-new)
+  (super-new)
+  
     
-    
-    (define observers (dls:new =))
-    
-    
-    (define/public (add-observer observer)
+  (define observers- null)
+  
+  
+  (define/public (add-observer observer)
       
-      (dls:attach-first! observers observer))
+    (set! observers- (cons observer observers-)))
+  
+  
+  (define/public (get-observers) observers-)
+  
     
+  (define/public (notify)
     
-    (define/public (observer-list)
-      
-      (send observers to-list))
+    (for-each
+     
+     (lambda (observer)
+       
+       (send observer update))
+     
+     observers-))  
+  
+  (define/public (externalize) null)
+  
+  (define/public (internalize)
     
-    
-    (define/public (notify)
-      
-      (unless (dls:empty? observers)
-        
-	(dls:map!
-         
-	 observers
-         
-	 (lambda (_ observer)
-           
-	   (send observer update)
-           
-	   observer)))
-      
-      void)))
+    this)))
 
+
+
+
+;; -----------
+;;    Deck
+;; -----------
 
 
 (define deck%
@@ -123,292 +149,285 @@
 
 
 
-(define cardlist%
+
+;; -----------
+;;  Card List
+;; -----------
+
+
+(define-serializable-class
   
-  (class observable%
-    
-    (init (cards null))
-    
-    
-    (define cards- (dls:new* eq? cards))
-    
-    
-    (super-new)
-    
-    
-    (define/public (from-list cards)
-      
-      (set! cards- (dls:new* eq? cards))
-      
-      (send this notify))
-    
-    
-    (define/public (to-list)
-      
-      (dls:to-list cards-))
-    
-    
-    (define/public (map! proc)
-      
-      (dls:map! cards- proc))
-    
-    
-    (define/public (for-each proc)
-      
-      (dls:map!
-       
-       cards-
-       
-       (lambda (_ card)
-         
-         (proc card)
-         
-         card)))
-    
-    
-    (define/public (get-length)
-      
-      (dls:length cards-))
-    
-    
-    (define/public (poke)
-      
-      (send this notify))
-    
-    
-    (define/public (add-card card)
-      
-      (dls:attach-first! cards- card)
-      
-      (send this notify))))
-
-
-
-(define cardlist-%
+  cardlist%
   
-  (class observable%
+  observable%
+    
+  (init (cards null))
     
     
-    (init (cards null))
+  (define cards- cards)
     
     
-    (define cards- cards)
+  (super-new)
     
     
-    (super-new)
-    
-    
-    (define/public (from-list cards)
+  (define/public (from-list cards)
       
-      (set! cards- cards)
-      
-      (send this notify))
+    (set! cards- cards)
     
-    
-    (define/public (to-list) cards-)
-    
-    
-    (define/public (map! proc)
-      
-      (set! cards- (map proc cards-)))
-    
-    
-    (define/public (get-length)
-      
-      (length cards-))
-    
-    
-    (define/public (poke)
-      
-      (send this notify))
-    
-    
-    (define (insert-in-middle lst val pos)
-      
-      (flatten
-       
-       (cons
-        
-        (take lst pos)
-        
-        (cons val (drop lst pos)))))
-    
-    
-    (define/public (add-card card . pos)
-      
-      (set! 
-       
-       cards- 
-       
-       (cond
-         
-         ((or (null? pos)
-              
-              (empty? cards-))
-          
-          (cons card cards-))
-         
-         (else
-          
-          (insert-in-middle cards- card (car pos)))))
-      
-      (send this notify))
-    
-    
-    (define/public (remove-card card)
-      
-      (set! cards- (remq card cards-))
-      
-      (send this notify))))
-
-
-
-(define player%
+    (send this notify))
   
   
-  (class* observable% (externalizable<%>)  
+  (define/public (to-list) cards-)
+  
+  
+  (define/public (map! proc)
     
-    (init (name null))
+    (set! cards- (map proc cards-)))
+  
+  
+  (define/public (foreach proc)
     
+    (for-each proc cards-))
+  
+  
+  (define/public (get-length)
     
-    (super-new)
-    
-    
-    (define name- name)
-    
-    
-    (define initial-morale- 20)
-    
-    
-    (define morale- initial-morale-)
-    
-    
-    (setup-dispatcher 
+    (length cards-))
+  
+  
+  (define/public (poke)
+      
+    (send this notify))
+  
+  
+  (define/private (insert-in-middle lst val pos)
+      
+    (flatten
      
-     dispatcher- query add! update! remove!)
-    
-    
-    (define/public (get-morale) morale-)
-    
-    
-    (define/public (get-initial-morale) initial-morale-)
-    
-    
-    (define/public (set-morale new-morale)
+     (cons
       
-      (set! morale- new-morale)
+      (take lst pos)
       
-      (send this notify)
-      
-      void)
-    
-    
-    (define/public (get-name) name-)
-    
-    
-    (define/public (set-name new-name)
-      
-      (set! name- new-name)
-      
-      (send this notify)
-      
-      void)
-    
-    
-    (define/public (externalize)
-      
-      (define squads 
-        
-        (map 
-         
-         (lambda (squad) 
-           
-           (send squad externalize))
-         
-         (send+ this 'squads)))
-      
-      (define active-squad (send+ this 'active-squad))
-      
-      (make-ws-player name- squads active-squad))
-    
-    
-    (define/public (internalize ws-player)
-      
-      (define resurrected
-      
-        (new 
-       
-         player%
-       
-         (name (ws-player-name ws-player))))
-      
-      (send+ 
-       
-       resurrected 'update-delegate 'squads
-       
-       (ws-player-squads ws-player))
-      
-      (send+
-       
-       resurrected 'update-delegate 'active-squad
-       
-       (ws-player-active-squad ws-player)))))
-
-
-
-(define squad%
+      (cons val (drop lst pos)))))
   
-  (class* cardlist% (externalizable<%>)
+  
+  (define/public (add-card card . pos)
     
-    
-    (init hero units)
-    
-        
-    (super-new 
+    (set! 
      
-     (cards (cons hero units)))
+     cards- 
+       
+     (cond
+       
+       ((or (null? pos)
+            
+            (empty? cards-))
+        
+        (cons card cards-))
+       
+       (else
+        
+        (insert-in-middle cards- card (car pos)))))
     
+    (send this notify))
+  
+  
+  (define/public (remove-card card)
     
-    (define hero- hero)
+    (set! cards- (remq card cards-))
     
+    (send this notify))
+  
+  
+  (define/override (externalize)
+    
+    (serialize cards-))
+  
+  
+  (define/override (internalize cards)
+    
+    (send this from-list cards)
+    
+    this))
 
-    (define (include-hero card) 
-      
-      (eq? hero- card))
-    
-    
-    (define (exclude-hero card)
-      
-      (not (include-hero card)))
-    
-    
-    (define/public (get-units)
-      
-      (filter exclude-hero (send this to-list)))
-    
-    
-    (define/public (get-hero) hero-)
-    
-    
-    (define/public (externalize)
-      
-      (make-ws-squad
-       
-       (send hero- externalize)
-       
-       (map serialize- (get-units))))
-    
-    
-    (define/public (internalize ws-squad)
-      
-      (new
-       
-       squad%
-       
-       (hero (ws-squad-hero ws-squad))
-       
-       (units (ws-squad-units ws-squad))))))
 
+
+
+;; -----------
+;;   Player
+;; -----------
+
+
+(define-serializable-class
+  
+  player%
+  
+  observable%
+    
+  (init (name null))
+    
+    
+  (super-new)
+    
+    
+  (define name- name)
+    
+    
+  (define initial-morale- 20)
+    
+    
+  (define morale- initial-morale-)
+    
+    
+  (setup-dispatcher 
+     
+   dispatcher- query add-delegate update-delegate remove-delegate)
+    
+    
+  (define/public (get-morale) morale-)
+    
+    
+  (define/public (get-initial-morale) initial-morale-)
+    
+    
+  (define/public (set-morale new-morale)
+      
+    (set! morale- new-morale)
+      
+    (send this notify)
+      
+    void)
+    
+  
+  (define/public (get-name) name-)
+  
+  
+  (define/public (remove-reflection)
+    
+    (set! dispatcher- null))
+  
+    
+  (define/public (set-name new-name)
+      
+    (set! name- new-name)
+      
+    (send this notify)
+      
+    void)
+  
+    
+  (define/override (externalize)
+      
+    (define squads 
+        
+      (map 
+         
+       (lambda (squad)
+         
+         (serialize squad))
+         
+       (send+ this 'squads)))
+    
+      
+    (define active-squad (serialize (send+ this 'active-squad)))
+    
+    (remove-reflection)
+      
+    (make-ws-player name- squads active-squad))
+    
+    
+  (define/override (internalize ws-player)
+      
+    (send this set-name (ws-player-name ws-player))
+    
+    (send
+       
+     this update-delegate 'squads
+       
+     (ws-player-squads ws-player))
+    
+    (send
+     
+     this update-delegate 'active-squad
+     
+     (ws-player-active-squad ws-player))
+    
+    this))
+
+
+
+
+;; -----------
+;;    Squad
+;; -----------
+
+
+(define-serializable-class
+  
+  squad%
+  
+  cardlist% 
+  
+  
+  (init hero units)
+  
+        
+  (super-new 
+     
+   (cards (cons hero units)))
+  
+    
+  (define hero- hero)
+    
+    
+  (define/public (get-units)
+      
+    (filter 
+     
+     (lambda (card) (eq? hero- card)) 
+     
+     (send this to-list)))
+  
+  
+  (define/public (set-units new-unit-list)
+    
+    (send 
+     
+     this from-list 
+     
+     (cons hero- new-unit-list)))
+    
+  
+  (define/public (get-hero) hero-)
+  
+  (define/public (set-hero new-hero)
+    
+    (set! hero- new-hero))
+    
+    
+  (define/override (externalize)
+    
+    (make-ws-squad
+     
+     (serialize hero-)
+     
+     (map serialize (get-units))))
+  
+  
+  (define/override (internalize ws-squad)
+    
+    (send this set-hero (ws-squad-hero ws-squad))
+    
+    (send this set-units (ws-card-units ws-squad))
+    
+    this))
+
+
+
+
+;; -----------
+;;    Card
+;; -----------
 
 
 (define card%
@@ -427,18 +446,25 @@
     
     (setup-dispatcher 
      
-     dispatcher- query add! update! remove!)
+     dispatcher- query add-delegate update-delegate remove-delegate)
     
     
-    (setup-card-fields ws-card- query add! update!)
+    (setup-card-fields ws-card- query add-delegate update-delegate)
     
     
-    (define/public (externalize) 
+    (define/public (remove-reflection)
+      
+      (set! dispatcher- null))
+    
+      
+    (define/override (externalize)
+      
+      (remove-reflection)
       
       ws-card-)
     
     
-    (define/public (internalize ws-card)
+    (define/override (internalize ws-card)
       
       (new card% (ws-card ws-card)))))
 
