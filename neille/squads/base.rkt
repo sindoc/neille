@@ -6,7 +6,7 @@
 
  racket/gui/base
   
- neille/base
+ neille/players/base
  
  neille/common/model-classes
  

@@ -1,7 +1,7 @@
 #lang racket
 
 (require 
- neille/base
+ neille/players/base
  neille/common/model-classes
  neille/cards/base
  neille/squads/static

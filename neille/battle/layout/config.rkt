@@ -7,7 +7,7 @@
 
 (require 
  
- neille/base
+ neille/players/base
  
  neille/common/view-classes
  
