@@ -22,7 +22,7 @@
  
  neille/battle/abilities/base
  
- neille/utils/broadcast-feedback-channel)
+ neille/utils/broadcast-feedback)
 
 
 
