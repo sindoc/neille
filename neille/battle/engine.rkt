@@ -4,7 +4,7 @@
  
  neille/base
  
- neille/model
+ neille/common/model-classes
  
  neille/cards/base
  

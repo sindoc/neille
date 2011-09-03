@@ -1,7 +1,7 @@
 #lang racket
 
 (require
- neille/model
+ neille/common/model-classes
  neille/cards/base
  neille/utils/syntax)
 

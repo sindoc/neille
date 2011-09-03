@@ -325,16 +325,32 @@
          
          (send+ this 'squads)))
       
-      (make-ws-player name- squads))
+      (define active-squad (send+ this 'active-squad))
+      
+      (make-ws-player name- squads active-squad))
     
     
     (define/public (internalize ws-player)
       
-      (new 
+      (define resurrected
+      
+        (new 
        
-       player%
+         player%
        
-       (name (ws-player-name ws-player))))))
+         (name (ws-player-name ws-player))))
+      
+      (send+ 
+       
+       resurrected 'update-delegate 'squads
+       
+       (ws-player-squads ws-player))
+      
+      (send+
+       
+       resurrected 'update-delegate 'active-squad
+       
+       (ws-player-active-squad ws-player)))))
 
 
 

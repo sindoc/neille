@@ -128,8 +128,8 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template name="require.view">neille/view</xsl:template>
-  <xsl:template name="require.model">neille/model</xsl:template>
+  <xsl:template name="require.view">neille/common/view-classes</xsl:template>
+  <xsl:template name="require.model">neille/common/model-classes</xsl:template>
 
   <xsl:template name="require.config">
     <xsl:call-template name="format-racket-value">

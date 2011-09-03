@@ -2,7 +2,7 @@
 
 (require 
  neille/base
- neille/model
+ neille/common/model-classes
  neille/cards/base
  neille/squads/static
  neille/utils/syntax

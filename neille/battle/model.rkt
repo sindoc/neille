@@ -3,7 +3,7 @@
 
 (require
  
- neille/model)
+ neille/common/model-classes)
 
 
 

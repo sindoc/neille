@@ -8,7 +8,7 @@
  
  games/cards
  
- neille/model
+ neille/common/model-classes
  
  neille/utils/syntax
  

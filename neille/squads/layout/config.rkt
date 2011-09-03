@@ -4,7 +4,7 @@
 
 (require
  
- neille/model
+ neille/common/model-classes
  
  neille/cards/base)
 

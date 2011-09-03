@@ -8,7 +8,7 @@
   
  neille/base
  
- neille/model
+ neille/common/model-classes
  
  neille/cards/base
  
@@ -24,7 +24,9 @@
 
 
 
-(provide (all-defined-out))
+(provide
+ 
+ setup-squad-selection-screen)
 
 
 
@@ -372,11 +374,13 @@
 
 
 
-(define (setup player squad)
+(define (setup-squad-selection-screen player)
+  
+  (define squad (send+ player 'active-squad))
   
   (when (is-a? squad squad%)
     
-    (setup-existing-squad squad))  
+    (setup-existing-squad squad))
   
   (setup-cards)
   
@@ -393,9 +397,6 @@
   void)
 
 
-
-(setup human (car squads))
-
-;(setup player null)
+;(setup-squad-selection-screen human)
 
 (send table- show #t)

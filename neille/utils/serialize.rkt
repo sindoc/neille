@@ -14,7 +14,7 @@
 
 (define-struct ws-player
   
-  (name squads)
+  (name squads active-squad)
   
   #:prefab)
 
