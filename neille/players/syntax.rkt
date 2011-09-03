@@ -45,7 +45,7 @@
             
 	    (lambda (goody goody-name)
               
-	      (send+ (car players) 'add-delegate goody-name goody))
+	      (send (car players) add-delegate goody-name goody))
             
 	    (list field ...)
             
@@ -55,7 +55,7 @@
             
 	    (lambda (goody goody-name)
               
-	      (send+ (cadr players) 'add-delegate goody-name goody))
+	      (send (cadr players) add-delegate goody-name goody))
             
 	    #,(syntax-case #'fields- ()
                 

@@ -158,7 +158,7 @@
     
     (define view (make-card-view card bitmap))
     
-    (send+ card 'add-delegate delegate view)))
+    (send card add-delegate delegate view)))
 
 
 
@@ -170,23 +170,23 @@
     (define new-card (new card% (ws-card (send+ stem 'ws-card))))
     
     
-    (send+ 
+    (send
      
-     new-card 'add-delegate view-maker-delegate
+     new-card add-delegate view-maker-delegate
      
      (send+ stem view-maker-delegate))
     
     
-    (send+ 
+    (send
      
-     new-card 'add-delegate detail-view-maker-delegate
+     new-card add-delegate detail-view-maker-delegate
      
      (send+ stem detail-view-maker-delegate))
     
     
-    (send+ 
+    (send
      
-     new-card 'add-delegate clone-maker-delegate
+     new-card add-delegate clone-maker-delegate
      
      (send+ stem clone-maker-delegate))
     
@@ -200,9 +200,9 @@
   (define card (new card% (ws-card ws-card)))
   
   
-  (send+ 
+  (send
    
-   card 'add-delegate 
+   card add-delegate 
    
    view-maker-delegate
    
@@ -213,9 +213,9 @@
     card-view-selector))
   
   
-  (send+ 
+  (send
    
-   card 'add-delegate 
+   card add-delegate 
    
    detail-view-maker-delegate
    
@@ -226,9 +226,9 @@
     card-detail-view-selector))
   
   
-  (send+ 
+  (send
    
-   card 'add-delegate 
+   card add-delegate 
    
    clone-maker-delegate
    

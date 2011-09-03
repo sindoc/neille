@@ -368,7 +368,9 @@
      
      (define squad  (new squad% (hero hero) (units units-)))
      
-     (send+ player 'update-delegate 'squads (list squad))
+     (send player update-delegate 'active-squad squad)
+     
+     (marshal player)
 
      void)))
 
