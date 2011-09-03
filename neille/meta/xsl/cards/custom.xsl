@@ -62,12 +62,6 @@
 
   <xsl:template name="output.head.content">
     <xsl:call-template name="racket.common.head.content"/>
-    <xsl:if test="$card.image != ''">
-      <xsl:call-template name="racket.require">
-	<xsl:with-param name="specs" select="$racket.require.gui"/>
-      </xsl:call-template>
-      <xsl:call-template name="margin"/>
-    </xsl:if>
     <xsl:call-template name="racket.provide">
       <xsl:with-param name="specs">
 	<xsl:call-template name="racket.all-defined-out"/>
