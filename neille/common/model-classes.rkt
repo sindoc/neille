@@ -380,7 +380,9 @@
       
     (filter 
      
-     (lambda (card) (eq? hero- card)) 
+     (lambda (card) 
+       
+       (eq? hero- card))
      
      (send this to-list)))
   
@@ -426,43 +428,58 @@
 ;; -----------
 
 
-(define card%
+(define-serializable-class
   
-  (class* observable% (externalizable<%>)
+  card%
+  
+  observable%
+  
     
+  (init (ws-card null))
+  
+  
+  (super-new)
+  
+  
+  (define ws-card- ws-card)
+  
+  
+  (setup-dispatcher 
+   
+   dispatcher- query add-delegate update-delegate remove-delegate)
+  
+  
+  (setup-card-fields 
+   
+   (if (null? ws-card-) 
+       
+       fallback-ws-card 
+       
+       ws-card-) 
+   
+   query add-delegate update-delegate)
+  
+  
+  (define/public (remove-reflection)
     
-    (init ws-card)
+    (set! dispatcher- null))
+  
+  
+  (define/public (set-ws-card new-ws-card)
     
-    
-    (super-new)
-    
-    
-    (define ws-card- ws-card)
-    
-    
-    (setup-dispatcher 
-     
-     dispatcher- query add-delegate update-delegate remove-delegate)
-    
-    
-    (setup-card-fields ws-card- query add-delegate update-delegate)
-    
-    
-    (define/public (remove-reflection)
+    (set! ws-card- new-ws-card))
+  
+  
+  (define/override (externalize)
       
-      (set! dispatcher- null))
+    (remove-reflection)
     
-      
-    (define/override (externalize)
-      
-      (remove-reflection)
-      
-      ws-card-)
+    ws-card-)
+  
+  
+  (define/override (internalize ws-card)
     
-    
-    (define/override (internalize ws-card)
-      
-      (new card% (ws-card ws-card)))))
+    (send this set-ws-card ws-card)))
 
 
 

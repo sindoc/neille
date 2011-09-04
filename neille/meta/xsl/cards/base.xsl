@@ -30,14 +30,30 @@
     <xsl:call-template name="output.head.content"/>
     <xsl:call-template name="define-card-collection"/>
     <xsl:call-template name="define-card-struct"/>
-    <xsl:if test="$card.image != ''">
+    <xsl:if test="$card.image != 0">
       <xsl:call-template name="define-card-image-struct"/>
       <xsl:call-template name="define-meta-image-struct"/>
     </xsl:if>
     <xsl:apply-templates select="//c:default" mode="registrar"/>
     <xsl:call-template name="margin"/>
+    <xsl:if test="$default.card.id != ''">
+      <xsl:call-template name="define-default-card"/>
+    </xsl:if>
+
+    <!-- Register cards -->
     <xsl:apply-templates/>
+    
     <xsl:call-template name="output.foot.content"/>
+  </xsl:template>
+
+
+  <xsl:template name="define-default-card">
+    <xsl:apply-templates select="//c:default" mode="define-default-card"/>
+    <xsl:apply-templates select="//c:default" 
+			 mode="define-default-card-registrar"/>
+    <xsl:call-template name="margin"/>
+    <xsl:apply-templates select="//c:default/c:card"
+			 mode="register-default-card"/>
   </xsl:template>
 
   <xsl:template name="define-card-collection">
@@ -57,19 +73,36 @@
     <xsl:call-template name="margin"/>
   </xsl:template>
 
+  <xsl:template name="make-card-struct">
+    <xsl:param name="field-values"/>
+    <xsl:call-template name="racket.apply">
+      <xsl:with-param name="proc" select="$card.struct.constructor.id"/>
+      <xsl:with-param name="args" select="$field-values"/>
+    </xsl:call-template>
+  </xsl:template>
+
   <xsl:template name="registrar-body">
     <xsl:call-template name="racket.assign">
       <xsl:with-param name="id" select="$card.collection.name"/>
       <xsl:with-param name="value">
 	<xsl:call-template name="racket.cons">
 	  <xsl:with-param name="car">
-	    <xsl:call-template name="racket.apply">
-	      <xsl:with-param name="proc" 
-			      select="$card.struct.constructor.id"/>
-	      <xsl:with-param name="args" select="$card-struct-fields"/>
+	    <xsl:call-template name="make-card-struct">
+	      <xsl:with-param name="field-values" select="$card-struct-fields"/>
 	    </xsl:call-template>
 	  </xsl:with-param>
 	  <xsl:with-param name="cdr" select="$card.collection.name"/>
+	</xsl:call-template>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template name="default-card-registrar-body">
+    <xsl:call-template name="racket.assign">
+      <xsl:with-param name="id" select="$default.card.id"/>
+      <xsl:with-param name="value">
+	<xsl:call-template name="make-card-struct">
+	  <xsl:with-param name="field-values" select="$card-struct-fields"/>
 	</xsl:call-template>
       </xsl:with-param>
     </xsl:call-template>
@@ -81,7 +114,7 @@
       <xsl:with-param name="args">
 	<xsl:call-template name="card-id"/>
 	<xsl:apply-templates select="c:*|@*"/>
-	<xsl:if test="$card.image != ''">
+	<xsl:if test="$card.image != 0">
 	  <xsl:call-template name="make-card-image"/>
 	</xsl:if>
       </xsl:with-param>
@@ -89,23 +122,64 @@
     <xsl:call-template name="margin"/>
   </xsl:template>  
 
-  <xsl:template match="c:default" mode="registrar">
+  <xsl:template name="define-card-registrar-proc">
+
+    <xsl:param name="id" select="$card.registrar.name"/>
+    <xsl:param name="body"/>
+
     <xsl:call-template name="racket.define.proc">
-      <xsl:with-param name="name" select="$card.registrar.name"/>
+      <xsl:with-param name="name" select="$id"/>
       <xsl:with-param name="formal-params">
 	<xsl:call-template name="define-card-id"/>
 	<xsl:apply-templates select="c:card/c:*|c:card/@*" mode="registrar"/>
-	<xsl:if test="$card.image != ''">
+	<xsl:if test="$card.image != 0">
 	  <xsl:call-template name="format-formal-param">
 	    <xsl:with-param name="keyword" select="$card.image.param.name"/>
 	    <xsl:with-param name="default-value" select="$racket.null"/>
 	  </xsl:call-template>
 	</xsl:if>
       </xsl:with-param>
+      <xsl:with-param name="body" select="$body"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="c:default" mode="registrar">
+    <xsl:call-template name="define-card-registrar-proc">
       <xsl:with-param name="body">
 	<xsl:call-template name="registrar-body"/>
       </xsl:with-param>
     </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="c:default" mode="define-default-card">
+    <xsl:call-template name="racket.define">
+      <xsl:with-param name="id" select="$default.card.id"/>
+      <xsl:with-param name="value" select="$racket.null"/>
+    </xsl:call-template>
+    <xsl:call-template name="margin"/>
+  </xsl:template>
+
+  <xsl:template match="c:default" mode="define-default-card-registrar">
+    <xsl:call-template name="define-card-registrar-proc">
+      <xsl:with-param name="id" select="$default.card.registrar.id"/>
+      <xsl:with-param name="body">
+	<xsl:call-template name="default-card-registrar-body"/>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+
+  <xsl:template match="//c:default/c:card" mode="register-default-card">
+    <xsl:call-template name="racket.apply">
+      <xsl:with-param name="proc" select="$default.card.registrar.id"/>
+      <xsl:with-param name="args">
+	<xsl:call-template name="card-id"/>
+	<xsl:apply-templates select="c:*|@*"/>
+	<xsl:if test="$card.image != 0">
+	  <xsl:call-template name="make-card-image"/>
+	</xsl:if>
+      </xsl:with-param>
+    </xsl:call-template>
+    <xsl:call-template name="margin"/>
   </xsl:template>
 
   <xsl:template match="c:name|c:type|c:faction|c:squadrole" mode="registrar">

@@ -22,7 +22,7 @@
     <xsl:value-of select="concat(local-name(.), ' ')"/>
   </xsl:template>
 
-  <xsl:param name="card.image">1</xsl:param>
+  <xsl:param name="card.image" select="1"/>
   <xsl:param name="card.image.basename.prefix">WS-</xsl:param>
   <xsl:param name="card.image.basename.suffix"></xsl:param>
   <xsl:param name="card.image.path.prefix">neille/cards/img/</xsl:param>
@@ -57,6 +57,8 @@
   <xsl:param name="card.struct.field.list.id" 
 	     select="concat($card.struct.id, '-fields')"/>
   <xsl:param name="card.collection.name">ws-cards</xsl:param>
+  <xsl:param name="default.card.id">fallback-ws-card</xsl:param>
+  <xsl:param name="default.card.registrar.id">set-fallback-card</xsl:param>
 
   <xsl:template name="call.struct.generate.fields"/>
 
