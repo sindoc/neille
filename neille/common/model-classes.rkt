@@ -441,7 +441,13 @@
   (super-new)
   
   
-  (define ws-card- ws-card)
+  (define ws-card- 
+    
+    (if (null? ws-card) 
+       
+        fallback-ws-card 
+       
+        ws-card))
   
   
   (setup-dispatcher 
@@ -451,13 +457,7 @@
   
   (setup-card-fields 
    
-   (if (null? ws-card-) 
-       
-       fallback-ws-card 
-       
-       ws-card-) 
-   
-   query add-delegate update-delegate)
+   ws-card- query add-delegate update-delegate)
   
   
   (define/public (remove-reflection)
@@ -479,7 +479,7 @@
   
   (define/override (internalize ws-card)
     
-    (send this set-ws-card ws-card)))
+    (new card% (ws-card ws-card))))
 
 
 
