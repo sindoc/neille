@@ -1,0 +1,18 @@
+The project hosted in this repository, codenamed Neille, is intended to 
+implement a Warstorm-like card game in Racket Lisp.
+
+Neille takes advantage of the following programming paradigms:
+
+- Functional
+- Procedural
+- Object-oriented
+- Modular
+- Event-driven
+- Reflective
+- Language-oriented
+- Generative
+- Reactive
+- Pipeline
+- Recursive
+- Iterative
+- Concurrent (implicit)
