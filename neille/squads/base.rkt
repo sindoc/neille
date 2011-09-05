@@ -10,7 +10,7 @@
   
  neille/players/base
  
- neille/common/model-classes
+ neille/common/model-classes/base
  
  neille/cards/base
  
@@ -408,14 +408,16 @@
 
 (define player
   
-  (let ((player- (unmarshal)))
+  (with-handlers
+             
+      ((exn? 
+               
+        (lambda (_)
+                 
+          human)))
+             
+    (prepare-player-cards (unmarshal))))
     
-    (if (is-a? player- player%)
-      
-        (prepare-player-cards player-)
-        
-        human)))
-
 
 (setup-squad-selection-screen player)
 

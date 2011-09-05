@@ -4,7 +4,7 @@
  
  neille/players/base
  
- neille/common/model-classes
+ neille/common/model-classes/base
  
  neille/cards/base
 

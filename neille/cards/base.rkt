@@ -8,17 +8,15 @@
  
  games/cards
  
- neille/common/model-classes
+ neille/common/model-classes/card
  
- neille/common/syntax
+ neille/common/base
  
  neille/cards/ws-cards
  
  neille/cards/reflection
  
- neille/players/reflection
- 
- neille/common/reflection)
+ neille/players/reflection)
 
 
 

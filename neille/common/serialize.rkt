@@ -4,11 +4,7 @@
 
 (require
  
- neille/common/reflection
- 
- neille/common/collection
- 
- neille/common/observable
+ neille/common/base
   
  (prefix-in rkt: racket/serialize))
 

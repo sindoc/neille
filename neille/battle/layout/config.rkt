@@ -9,7 +9,7 @@
  
  neille/players/base
  
- neille/common/view-classes
+ neille/common/view-classes/base
  
  neille/battle/model)
 
