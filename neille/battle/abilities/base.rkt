@@ -3,290 +3,77 @@
 
 
 (require
+
+ neille/players/base
  
- "syntax.rkt"
+ neille/cards/reflection
  
- "reader.rkt"
+ ;neille/battle/common
  
- "space.rkt"
+ neille/common/base
  
- neille/utils/base)
+ "abilities.rkt")
 
 
 
 (provide
  
- ability-space)
-
-
-
-(define ability-space (make-ability-space))
-
-
-
-(define *+/-*     "[+|-]" )
-
-(define *amount*  "[\\d]+")
-
-
-
-(define-ability 
+ (all-defined-out)
+ 
+ (all-from-out
   
-  ability-space
+  "abilities.rkt"))
+
+
+
+(define (load-card-abilities players)
   
-  "Attack" 
-  
-  (*+/-* *amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
+  (for-each
+   
+   (lambda (player)
+     
+     (define squad (get-active-squad player))
+     
+     (for-each
       
-      (define amount    (get-amount vars))
+      (lambda (card)
+     
+        (send 
       
-      (define direction (get-direction vars))
+         card update-delegate card-abilities-delegate
+         
+         (lambda (_)
       
-      (show "Amount: " amount " ; Direction: " direction "\n"))))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Heal"
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
+           (map
+       
+            (lambda (ability-descriptor)
+         
+              (send ability-space dispatch-ability ability-descriptor))
+       
+            (send card get-specials))))
+        
+        (send
+         
+         card update-delegate clean-reflection-delegate
+         
+         (lambda (current-reflection-cleaners)
+           
+           (cons
+            
+            (lambda (card)
+              
+              (send
+               
+               player remove-delegate card-abilities-delegate))
+            
+            current-reflection-cleaners))))
       
-      void)))
+      (send squad to-list)))
+   
+   players))
+        
+        
 
-
-
-(define-ability
-  
-  ability-space
-  
-  "Pikeman"
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Archery"
-  
-  ()
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Zap"
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Poison"
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Sabotage"
-  
-  ()
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Retaliate"
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Trap"
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Sap"
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Health"
-  
-  (*+/-* *amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Regenerate"
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Trample"
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Block"
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  ""
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
-
-
-
-(define-ability
-  
-  ability-space
-  
-  "Rush"
-  
-  (*amount*)
-  
-  (lambda vars
-    
-    (lambda (player)
-      
-      void)))
 
 
 

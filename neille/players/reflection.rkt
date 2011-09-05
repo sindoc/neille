@@ -2,6 +2,12 @@
 
 
 
+(require
+ 
+ neille/common/syntax)
+
+
+
 (provide
  
  (all-defined-out))
@@ -25,6 +31,14 @@
 (define player-squads-delegate           'squads)
 
 
+
+(define (get-deck           player) (send+ player player-deck-delegate))
+
+(define (get-inplay         player) (send+ player player-inplay-delegate))
+
+(define (get-staging        player) (send+ player player-staging-delegate))
+
+(define (get-active-squad   player) (send+ player player-active-squad-delegate))
 
 
 

@@ -7,10 +7,8 @@
  neille/common/model-classes
  
  neille/cards/base
- 
- neille/players/syntax
 
- neille/common/syntax
+ neille/common/base
  
  neille/squads/static
  
@@ -22,36 +20,13 @@
  
  neille/battle/abilities/base
  
- neille/utils/broadcast-feedback)
+ neille/battle/channel)
 
 
 
 (provide
  
  (all-defined-out))
-
-
-
-(define broadcast-feedback-channel 
-  
-  (make-broadcast-feedback-channel
-   
-   (lambda (message . args)
-     
-     (case message
-         
-       ((cool)
-        
-        message)
-       
-       (else
-     
-        (error 
-         
-         "I'm afraid we don't speak the same language. You said: " 
-         
-         message))))))
-
 
 
 
@@ -173,39 +148,6 @@
 
 
 
-(define (load-card-abilities players)
-  
-  (for-each
-   
-   (lambda (player)
-     
-     (define squad (get-active-squad player))
-     
-     (for-each
-      
-      (lambda (card)
-     
-        (send 
-      
-         player update-delegate 'abilities
-         
-         (lambda (_)
-      
-           (map
-       
-            (lambda (ability-descriptor)
-         
-              (send ability-space dispatch-ability ability-descriptor))
-       
-            (send card get-specials)))))
-      
-      (send squad to-list)))
-   
-   players))
-        
-        
-
-
 (define (start-playing)
   
   (init-players 
@@ -214,7 +156,7 @@
  
    (deck graveyard reserve inplay staging opponent active-squad))
   
-  ;(load-card-abilities players)
+  (load-card-abilities players)
   
   (load-decks-with-active-squads players)
 

@@ -6,6 +6,8 @@
  
  racket/gui/base
  
+ neille/battle/channel
+ 
  neille/battle/engine
  
  neille/battle/events

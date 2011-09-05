@@ -7,6 +7,8 @@
  neille/common/model-classes
  
  neille/players/reflection
+
+ neille/players/syntax
  
  racket/mpair
  
@@ -20,6 +22,8 @@
  
  (all-from-out
   
+  neille/players/syntax
+
   neille/players/reflection))
 
 

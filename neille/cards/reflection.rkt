@@ -23,3 +23,7 @@
 
 
 (define card-ws-card-delegate           'ws-card)
+
+
+
+(define card-abilities-delegate        'abilities)

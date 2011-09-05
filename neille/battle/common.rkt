@@ -4,9 +4,9 @@
 
 (require
  
- neille/common/syntax
+ neille/common/base
  
- neille/players/reflection
+ neille/players/base
  
  (prefix-in ring: a-d/ring))
 
@@ -15,16 +15,6 @@
 (provide
  
  (all-defined-out))
-
-
-
-(define (get-deck           player) (send+ player player-deck-delegate))
-
-(define (get-inplay         player) (send+ player player-inplay-delegate))
-
-(define (get-staging        player) (send+ player player-staging-delegate))
-
-(define (get-active-squad   player) (send+ player player-active-squad-delegate))
 
 
 (define (get-card-readiness card)   (send card get-ready))
