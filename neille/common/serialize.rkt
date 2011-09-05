@@ -2,6 +2,18 @@
 
 
 
+(require
+ 
+ neille/common/reflection
+ 
+ neille/common/collection
+ 
+ neille/common/observable
+  
+ (prefix-in rkt: racket/serialize))
+
+
+
 (provide 
  
  (all-defined-out))
@@ -28,6 +40,76 @@
 
 
 
-(define (serialize- any)
+(define (remove-reflection object)
   
-  (send any externalize))
+  (when (is-a? object observable%)
+    
+    (send object remove-all-observers))
+  
+  (when (is-a? object reflective<%>)
+    
+    (send object remove-reflection)
+     
+    (send
+   
+     object for-each-delegate
+   
+     (lambda (_ delegate)
+     
+       (cond
+       
+         ((list? delegate)
+        
+          (for-each
+         
+           (lambda (sub-delegate)
+        
+             (remove-reflection sub-delegate))
+         
+           delegate))
+       
+         ((is-a? delegate collection<%>)
+        
+          (send
+         
+           delegate foreach
+         
+           (lambda (sub-delegate)
+           
+             (remove-reflection sub-delegate))))
+         
+         (else void))))))    
+
+
+
+(define (serialize object)
+  
+  (remove-reflection object)
+    
+  (rkt:serialize object))
+
+
+
+(define (deserialize any)
+  
+  (rkt:deserialize any))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

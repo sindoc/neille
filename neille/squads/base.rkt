@@ -1,5 +1,7 @@
 #lang racket
 
+
+
 (require
  
  games/cards
@@ -36,9 +38,9 @@
 
 (define (clone-card stem)
   
-  (define clone ((send+ stem 'make-clone)))
+  (define clone ((send+ stem card-clone-maker-delegate)))
   
-  ((send+ clone 'make-view) clone)
+  ((send+ clone card-view-maker-delegate) clone)
   
   clone)
 
@@ -54,7 +56,7 @@
       
       (define clone (clone-card stem-card))
       
-      (let ((card-view (send+ clone 'view)))
+      (let ((card-view (send+ clone card-view-delegate)))
         
         (send card-view snap-back-after-move #t)
         
@@ -120,7 +122,7 @@
   
   (define (get-card-view card) 
     
-    (send+ card 'view))
+    (send+ card card-view-delegate))
   
   
   (send card-list from-list page-content)
@@ -368,7 +370,11 @@
      
      (define squad  (new squad% (hero hero) (units units-)))
      
-     (send player update-delegate 'active-squad squad)
+     (send 
+      
+      player update-delegate player-active-squad-delegate 
+      
+      (lambda (_) squad))
      
      (marshal player)
 
@@ -378,7 +384,7 @@
 
 (define (setup-squad-selection-screen player)
   
-  (define squad (send+ player 'active-squad))
+  (define squad (send+ player player-active-squad-delegate))
   
   (when (is-a? squad squad%)
     
@@ -399,6 +405,18 @@
   void)
 
 
-(setup-squad-selection-screen human)
+
+(define player
+  
+  (let ((player- (unmarshal)))
+    
+    (if (is-a? player- player%)
+      
+        (prepare-player-cards player-)
+        
+        human)))
+
+
+(setup-squad-selection-screen player)
 
 (send table- show #t)

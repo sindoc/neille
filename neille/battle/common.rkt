@@ -6,6 +6,8 @@
  
  neille/common/syntax
  
+ neille/players/reflection
+ 
  (prefix-in ring: a-d/ring))
 
 
@@ -16,13 +18,13 @@
 
 
 
-(define (get-deck           player) (send+ player 'deck))
+(define (get-deck           player) (send+ player player-deck-delegate))
 
-(define (get-inplay         player) (send+ player 'inplay))
+(define (get-inplay         player) (send+ player player-inplay-delegate))
 
-(define (get-staging        player) (send+ player 'staging))
+(define (get-staging        player) (send+ player player-staging-delegate))
 
-(define (get-active-squad   player) (send+ player 'active-squad))
+(define (get-active-squad   player) (send+ player player-active-squad-delegate))
 
 
 (define (get-card-readiness card)   (send card get-ready))

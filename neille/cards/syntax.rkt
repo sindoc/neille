@@ -54,7 +54,7 @@
                         
                         (define/public (#,set-field val) 
                           
-                          (update '#,stem val)
+                          (update '#,stem (lambda (_) val))
                           
                           (send this notify)
                           

@@ -188,14 +188,16 @@
         (send 
       
          player update-delegate 'abilities
-      
-         (map
-       
-          (lambda (ability-descriptor)
          
-            (send ability-space dispatch-ability ability-descriptor))
+         (lambda (_)
+      
+           (map
        
-          (send card get-specials))))
+            (lambda (ability-descriptor)
+         
+              (send ability-space dispatch-ability ability-descriptor))
+       
+            (send card get-specials)))))
       
       (send squad to-list)))
    

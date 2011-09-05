@@ -8,7 +8,9 @@
   
   neille/common/syntax)
 
- neille/common/syntax)
+ neille/common/syntax
+ 
+ neille/players/reflection)
 
 
 
@@ -29,7 +31,7 @@
          
 	 ((fields- 
            
-	   (let ((l (syntax->list #'(field ...))))
+	   (let ((lst (syntax->list #'(field ...))))
              
 	     (map 
               
@@ -37,11 +39,23 @@
                 
 		(make-id stx "-~a" f))
               
-	      l))))
+	      lst)))
+          
+          (delegates
+           
+           (let ((lst (syntax->list #'(field ...))))
+             
+             (map
+              
+              (lambda (f)
+                
+                (make-id stx "player-~a-delegate" f))
+              
+              lst))))
        
        #`(begin
            
-	   (for-each 
+           (for-each 
             
 	    (lambda (goody goody-name)
               
@@ -49,7 +63,12 @@
             
 	    (list field ...)
             
-	    '(field ...))
+            #,(syntax-case #'delegates ()
+                
+                ((delegate ...)
+                 
+                 #'(list delegate ...))))
+           
            
 	   (for-each 
             
@@ -63,7 +82,11 @@
                    
 		   #'(list fs- ...)))
             
-	    '(field ...)))))))
+	    #,(syntax-case #'delegates ()
+                
+                ((delegate ...)
+                 
+                 #'(list delegate ...)))))))))
 
 
 

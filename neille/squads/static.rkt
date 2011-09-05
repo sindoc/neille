@@ -3,7 +3,8 @@
 (require
  neille/common/model-classes
  neille/cards/base
- neille/common/syntax)
+ neille/common/syntax
+ neille/cards/reflection)
 
 (provide (all-defined-out))
 
@@ -11,8 +12,8 @@
   
   (define (make-card stem)
     (define clone 
-      (apply (send+ stem 'make-clone) '()))
-    ((send+ clone 'make-view) clone)
+      (apply (send+ stem card-clone-maker-delegate) '()))
+    ((send+ clone card-view-maker-delegate) clone)
     clone)
   
   (define units-count 6)

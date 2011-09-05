@@ -12,9 +12,17 @@
  
  neille/common/serialize
  
- racket/serialize
- 
  neille/cards/ws-cards
+ 
+ neille/cards/reflection
+ 
+ neille/common/reflection
+ 
+ neille/players/reflection
+ 
+ neille/common/collection
+ 
+ neille/common/observable
  
  (prefix-in stk: neille/utils/stack))
 
@@ -34,51 +42,6 @@
 
 
 
-
-;; -----------
-;;  Observer
-;; -----------
-
-
-(define-serializable-class
-
-  observable%
-  
-  object%
-    
-  (super-new)
-  
-    
-  (define observers- null)
-  
-  
-  (define/public (add-observer observer)
-      
-    (set! observers- (cons observer observers-)))
-  
-  
-  (define/public (get-observers) observers-)
-  
-    
-  (define/public (notify)
-    
-    (for-each
-     
-     (lambda (observer)
-       
-       (send observer update))
-     
-     observers-))  
-  
-  (define/public (externalize) null)
-  
-  (define/public (internalize)
-    
-    this))
-
-
-
-
 ;; -----------
 ;;    Deck
 ;; -----------
@@ -86,7 +49,10 @@
 
 (define deck%
   
-  (class observable%
+  (class* observable%
+    
+    (collection<%>)
+    
     
     (super-new)
     
@@ -128,6 +94,10 @@
       (stk:top cards-))
     
     
+    (define/public (foreach proc)
+      
+      void)
+    
     (define/public (push card)
       
       (stk:push! cards- card)
@@ -151,11 +121,13 @@
 ;; -----------
 
 
-(define-serializable-class
+(define-serializable-class*
   
   cardlist%
   
   observable%
+  
+  (collection<%>)
     
   (init (cards null))
     
@@ -254,11 +226,13 @@
 ;; -----------
 
 
-(define-serializable-class
+(define-serializable-class*
   
   player%
   
   observable%
+  
+  (reflective<%>)
     
   (init (name null))
     
@@ -277,7 +251,9 @@
     
   (setup-dispatcher 
      
-   dispatcher- query add-delegate update-delegate remove-delegate)
+   dispatcher- query add-delegate update-delegate 
+   
+   remove-delegate for-each-delegate)
     
     
   (define/public (get-morale) morale-)
@@ -300,7 +276,7 @@
   
   (define/public (remove-reflection)
     
-    (set! dispatcher- null))
+    (common-clean-reflection this))
   
     
   (define/public (set-name new-name)
@@ -322,10 +298,14 @@
          
          (serialize squad))
          
-       (send+ this 'squads)))
+       (send+ this player-squads-delegate)))
     
       
-    (define active-squad (serialize (send+ this 'active-squad)))
+    (define active-squad 
+      
+      (serialize 
+       
+       (send+ this player-active-squad-delegate)))
     
     (remove-reflection)
       
@@ -339,14 +319,18 @@
     (send
        
      this update-delegate 'squads
+     
+     (lambda (_)
        
-     (ws-player-squads ws-player))
+       (ws-player-squads ws-player)))
     
     (send
      
      this update-delegate 'active-squad
      
-     (ws-player-active-squad ws-player))
+     (lambda (_)
+     
+       (ws-player-active-squad ws-player)))
     
     this))
 
@@ -374,17 +358,11 @@
   
     
   (define hero- hero)
-    
+  
     
   (define/public (get-units)
-      
-    (filter 
-     
-     (lambda (card) 
-       
-       (eq? hero- card))
-     
-     (send this to-list)))
+           
+     (cdr (send this to-list)))
   
   
   (define/public (set-units new-unit-list)
@@ -396,11 +374,20 @@
      (cons hero- new-unit-list)))
     
   
-  (define/public (get-hero) hero-)
+  (define/public (get-hero)
+    
+    (car (send this to-list)))
+  
   
   (define/public (set-hero new-hero)
     
-    (set! hero- new-hero))
+    (set! hero- new-hero)
+    
+    (send 
+     
+     this from-list
+     
+     (cons hero- (cdr (send this to-list)))))
     
     
   (define/override (externalize)
@@ -414,9 +401,9 @@
   
   (define/override (internalize ws-squad)
     
-    (send this set-hero (ws-squad-hero ws-squad))
+    (set-hero (ws-squad-hero ws-squad))
     
-    (send this set-units (ws-card-units ws-squad))
+    (set-units (ws-card-units ws-squad))
     
     this))
 
@@ -428,12 +415,13 @@
 ;; -----------
 
 
-(define-serializable-class
+(define-serializable-class*
   
   card%
   
   observable%
   
+  (reflective<%>)
     
   (init (ws-card null))
   
@@ -452,7 +440,9 @@
   
   (setup-dispatcher 
    
-   dispatcher- query add-delegate update-delegate remove-delegate)
+   dispatcher- query add-delegate update-delegate 
+   
+   remove-delegate for-each-delegate)
   
   
   (setup-card-fields 
@@ -462,7 +452,7 @@
   
   (define/public (remove-reflection)
     
-    (set! dispatcher- null))
+    (common-clean-reflection this))
   
   
   (define/public (set-ws-card new-ws-card)

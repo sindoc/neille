@@ -6,6 +6,8 @@
  
  neille/common/model-classes
  
+ neille/players/reflection
+ 
  racket/mpair
  
  (prefix-in ring: a-d/ring))
@@ -14,7 +16,11 @@
 
 (provide 
  
- (all-defined-out))
+ (all-defined-out)
+ 
+ (all-from-out
+  
+  neille/players/reflection))
 
 
 (define human-player-name 'human)

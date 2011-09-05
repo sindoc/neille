@@ -81,7 +81,7 @@
   
   (syntax-case stx ()
     
-    ((_ dispatcher query add update remove)
+    ((_ dispatcher query add update remove foreach)
      
      (with-syntax
          
@@ -111,7 +111,7 @@
 	     (hash-set! dispatcher msg delegate))
            
            
-	   (define/public (update msg delegate)
+	   (define/public (update msg updater)
              
 	     (check-msg-type 'update-delegate msg)
              
@@ -119,9 +119,9 @@
               
 	      dispatcher msg
               
-	      (lambda (_) delegate)
+              updater
               
-	      (lambda () #f)))
+	      (lambda () null)))
     	   
            
            (define/public (remove msg)
@@ -129,6 +129,13 @@
 	     (check-msg-type 'remove-delegate msg)
              
 	     (hash-remove! dispatcher msg))
+           
+           
+           (define/public (foreach proc)
+             
+             (hash-for-each
+              
+              dispatcher proc))
                       
            
 	   (define/public (query msg)
@@ -143,7 +150,7 @@
                  
                 ; (object-name this) "Unknown message " msg)
                 
-                #f))))))))
+                null))))))))
 
 
 

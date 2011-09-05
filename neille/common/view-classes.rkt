@@ -22,13 +22,13 @@
 
 
 
-(define observer- (interface () update))
+(define observer<%> (interface () update))
 
 
 
 (define view%
   
-  (class* object% (observer-)
+  (class* object% (observer<%>)
     
     
     (super-new)
@@ -120,7 +120,7 @@
           
            (make-fallback-card-view)
           
-           (send+ (send deck- top) 'view))))
+           (send+ (send deck- top) card-view-delegate))))
     
     
     (update-view)
@@ -167,7 +167,7 @@
        
        (lambda (child card)
          
-         (define card-view (send+ card 'view))
+         (define card-view (send+ card card-view-delegate))
          
          (send root- remove-cards (list card-view))
          
@@ -256,7 +256,7 @@
       
       (set! card- (send this get-model))
       
-      (set! card-view- (send+ card- 'view))
+      (set! card-view- (send+ card- card-view-delegate))
       
       card-view-)
     
