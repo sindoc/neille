@@ -56,14 +56,35 @@
   (define/public (get-initial-morale) initial-morale-)
     
     
-  (define/public (set-morale new-morale)
+  (define/public (decrement-morale . amount)
       
-    (set! morale- new-morale)
+    (set! 
+     
+     morale- 
+     
+     (- morale-
+     
+        (if (null? amount) 1 (car amount))))
       
     (send this notify)
       
     void)
     
+  
+  (define/public (increment-morale . amount)
+      
+    (set! 
+     
+     morale- 
+     
+     (+ morale-
+     
+        (if (null? amount) 1 (car amount))))
+      
+    (send this notify)
+      
+    void)
+  
   
   (define/public (get-name) name-)
   

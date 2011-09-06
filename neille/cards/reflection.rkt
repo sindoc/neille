@@ -2,6 +2,11 @@
 
 
 
+(require
+ 
+ neille/common/syntax)
+
+
 (provide
  
  (all-defined-out))
@@ -27,3 +32,9 @@
 
 
 (define card-abilities-delegate        'abilities)
+
+
+
+(define (get-card-abilities card)
+  
+  (send+ card card-abilities-delegate))

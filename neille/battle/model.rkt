@@ -3,6 +3,8 @@
 
 (require
  
+ neille/battle/model-classes/base
+ 
  neille/common/model-classes/base)
 
 
@@ -21,13 +23,13 @@
 
 (define reserve         (new deck%))
 
-(define inplay          (new cardlist%))
+(define inplay          (new inplay%))
 
 (define graveyard       (new deck%))
 
 (define -reserve        (new deck%))
 
-(define -inplay         (new cardlist%))
+(define -inplay         (new inplay%))
 
 (define -graveyard      (new deck%))
 

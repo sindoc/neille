@@ -54,7 +54,7 @@
         
         (height 80)))
             
-     (define feedback 'wow)
+     (define feedback '42)
      
      (send dialog show #t)
      

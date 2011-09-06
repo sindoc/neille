@@ -104,6 +104,7 @@
      
      (broadcast-end-of-game player opponent))
          
+    
     (else
      
      
@@ -116,10 +117,10 @@
      (deploy-cards-from-staging staging inplay)
      
      
-     ;(attack player opponent)
+     ;(send inplay attack player opponent)
      
      
-     (sleep 5)
+     (sleep 1)
      
      
      (battle-loop 
