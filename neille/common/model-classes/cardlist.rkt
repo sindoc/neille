@@ -4,6 +4,8 @@
 
 (require
  
+ neille/utils/base
+ 
  neille/common/base
  
  neille/common/serialize)
@@ -63,15 +65,52 @@
     (send this notify))
   
   
-  (define/private (insert-in-middle lst val pos)
-      
-    (flatten
+  (define/private (insert-in-middle val pos)
+    
+    (define size (length cards-))
+    
+    (assert 
      
-     (cons
+     (>= pos 1)
       
-      (take lst pos)
+     "Position must be greater than or equal to 1 " 
+     
+     "cardlist%: insert-in-middle")
+    
+    (let ((head
+           
+           (let ((cut (- pos 1)))
       
-      (cons val (drop lst pos)))))
+             (cond
+        
+               ((<= cut size)
+           
+                (take cards- cut))
+          
+               (else
+           
+                (append
+            
+                 cards-
+            
+                 (build-list 
+                  
+                  (- cut size)
+                  
+                  (lambda (_) null)))))))
+          
+          (tail
+      
+           (cond
+        
+             ((<= pos size)
+         
+              (drop cards- pos))
+        
+             (else null))))
+           
+    
+      (append head (cons val tail))))
   
   
   (define/public (add-card card . pos)
@@ -82,15 +121,13 @@
        
      (cond
        
-       ((or (null? pos)
-            
-            (empty? cards-))
+       ((null? pos)
         
         (cons card cards-))
        
        (else
         
-        (insert-in-middle cards- card (car pos)))))
+        (insert-in-middle card (car pos)))))
     
     (send this notify))
   

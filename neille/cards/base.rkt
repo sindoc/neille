@@ -82,6 +82,11 @@
 
 
 
+(define (card? value)
+  
+  (is-a? value card%))
+
+
 (define card-view-selector car)
 
 (define card-detail-view-selector cadr)

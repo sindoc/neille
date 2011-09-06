@@ -45,11 +45,13 @@
        
        (lambda (child card)
          
-         (define card-view (send+ card card-view-delegate))
+         (when (card? card)
          
-         (send root- remove-cards (list card-view))
+           (let ((card-view (send+ card card-view-delegate)))
          
-         (send root- add-cards-to-region (list card-view) child))
+             (send root- remove-cards (list card-view))
+         
+             (send root- add-cards-to-region (list card-view) child))))
        
        (take children- (min (cardlist-length) max-))
        

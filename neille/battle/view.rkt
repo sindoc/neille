@@ -44,7 +44,7 @@
         
          (format 
          
-          "~a won the game" 
+          "~a won the game"
          
           (symbol->string
           

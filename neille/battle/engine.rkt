@@ -116,7 +116,10 @@
      (deploy-cards-from-staging staging inplay)
      
      
-     ;(sleep 0.6)
+     ;(attack player opponent)
+     
+     
+     (sleep 5)
      
      
      (battle-loop 
