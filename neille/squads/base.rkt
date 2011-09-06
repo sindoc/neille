@@ -229,7 +229,7 @@
         
           (let ((clone (clone-card card)))
           
-            (send units add-card clone unit-index)))
+            (send units add-card clone (+ unit-index 1))))
         
         void))))
   
@@ -377,6 +377,8 @@
       (lambda (_) squad))
      
      (marshal player)
+     
+     (send table- show #f)
 
      void)))
 
